@@ -16,60 +16,62 @@ type JobCardProps = {
 export function JobCard({ job, featured = false }: JobCardProps) {
   return (
     <Card className={`group overflow-hidden border-[#d6deec] transition duration-200 hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#14213d]/10 ${featured ? "ring-2 ring-[#f3c9d3]" : ""}`}>
-      <CardHeader>
-        <div className="flex items-start justify-between gap-4">
-          <div className="space-y-2">
-            <div className="flex flex-wrap items-center gap-2">
-              <Badge variant={job.visaSponsorship ? "success" : "muted"}>{job.visaSponsorship ? "Visa sponsorship" : "Open to all"}</Badge>
-              {job.remote ? <Badge variant="accent">Remote</Badge> : null}
-              <span className="rounded-full bg-[#eef2fb] px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-[#14213d]">
+      <CardHeader className="p-3 sm:p-4 md:p-5">
+        <div className="flex items-start justify-between gap-3 sm:gap-4">
+          <div className="space-y-2 min-w-0">
+            <div className="flex flex-wrap items-center gap-1 sm:gap-2">
+              <Badge variant={job.visaSponsorship ? "success" : "muted"} className="text-xs">{job.visaSponsorship ? "Visa" : "Open"}</Badge>
+              {job.remote ? <Badge variant="accent" className="text-xs">Remote</Badge> : null}
+              <span className="rounded-full bg-[#eef2fb] px-2 sm:px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-[#14213d]">
                 {job.source}
               </span>
             </div>
-            <CardTitle className="text-balance">{job.title}</CardTitle>
-            <CardDescription className="flex items-center gap-2">
-              <Building2 className="h-4 w-4" />
-              {job.company}
+            <CardTitle className="text-balance text-sm sm:text-base">{job.title}</CardTitle>
+            <CardDescription className="flex items-center gap-2 text-xs sm:text-sm">
+              <Building2 className="h-3 w-3 sm:h-4 sm:w-4 shrink-0" />
+              <span className="truncate">{job.company}</span>
             </CardDescription>
           </div>
-          <BookmarkButton job={job} compact />
+          <div className="shrink-0">
+            <BookmarkButton job={job} compact />
+          </div>
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-4">
-        <CardDescription className="flex items-center gap-2 text-sm">
-          <MapPin className="h-4 w-4" />
-          <span className="inline-flex items-center gap-2">
+      <CardContent className="space-y-3 p-3 sm:p-4 md:p-5">
+        <CardDescription className="flex items-center gap-2 text-xs sm:text-sm">
+          <MapPin className="h-3 w-3 sm:h-4 sm:w-4 shrink-0" />
+          <span className="inline-flex items-center gap-1 sm:gap-2">
             <span aria-hidden>{job.countryFlag}</span>
-            <span>{job.location}</span>
+            <span className="truncate">{job.location}</span>
           </span>
         </CardDescription>
-        <p className="line-clamp-3 text-sm leading-6 text-slate-600">{job.shortDescription}</p>
+        <p className="line-clamp-2 sm:line-clamp-3 text-xs sm:text-sm leading-5 sm:leading-6 text-slate-600">{job.shortDescription}</p>
 
-        <div className="flex flex-wrap gap-2">
-          {job.categories.slice(0, 3).map((category) => (
-            <span key={category} className="rounded-full bg-[#f4f6fb] px-3 py-1 text-xs font-medium uppercase tracking-wide text-[#475569]">
+        <div className="flex flex-wrap gap-1 sm:gap-2">
+          {job.categories.slice(0, 2).map((category) => (
+            <span key={category} className="rounded-full bg-[#f4f6fb] px-2 sm:px-3 py-0.5 sm:py-1 text-xs font-medium uppercase tracking-wide text-[#475569]">
               {category}
             </span>
           ))}
         </div>
       </CardContent>
 
-      <CardFooter className="flex flex-col gap-4">
-        <div className="flex flex-wrap items-center gap-2">
-          <Button asChild variant="secondary">
+      <CardFooter className="flex flex-col gap-2 p-3 sm:p-4 md:p-5">
+        <div className="flex w-full flex-col gap-2 sm:flex-row sm:gap-2">
+          <Button asChild variant="secondary" className="h-9 sm:h-10 text-xs sm:text-sm min-h-10">
             <Link href={buildJobPath(job)}>
               View Details
-              <ArrowUpRight className="h-4 w-4" />
+              <ArrowUpRight className="h-3 w-3 sm:h-4 sm:w-4" />
             </Link>
           </Button>
-          <a href={job.applyUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full bg-[#14213d] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#0e1831]">
+          <a href={job.applyUrl} target="_blank" rel="noreferrer" className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 rounded-full bg-[#14213d] px-4 py-2 sm:py-2.5 min-h-10 text-xs sm:text-sm font-medium text-white transition hover:bg-[#0e1831]">
             Apply
-            <Sparkles className="h-4 w-4" />
+            <Sparkles className="h-3 w-3 sm:h-4 sm:w-4" />
           </a>
         </div>
-        <div className="w-full border-t border-slate-200/70 pt-4">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Share this job</p>
+        <div className="w-full border-t border-slate-200/70 pt-2 sm:pt-3">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Share</p>
           <ShareButtons job={job} compact />
         </div>
       </CardFooter>

@@ -46,10 +46,10 @@ export default async function JobPage({ params }: JobPageProps) {
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
-      <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_340px]">
-        <article className="space-y-6">
+      <div className="grid gap-6 md:gap-8 lg:grid-cols-[minmax(0,1fr)_340px]">
+        <article className="space-y-4 md:space-y-6">
           <Card>
-            <CardContent className="space-y-6 p-6 sm:p-8">
+            <CardContent className="space-y-6 p-3 sm:p-4 md:p-6 lg:p-8">
               <div className="flex flex-wrap items-center gap-2">
                 <Badge variant={job.visaSponsorship ? "success" : "muted"}>{job.visaSponsorship ? "Visa sponsorship available" : "Review sponsorship details"}</Badge>
                 {job.remote ? <Badge variant="accent">Remote friendly</Badge> : null}
@@ -57,8 +57,8 @@ export default async function JobPage({ params }: JobPageProps) {
               </div>
 
               <div className="space-y-3">
-                <h1 className="text-4xl font-semibold tracking-tight text-slate-950 text-balance">{job.title}</h1>
-                <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-slate-950 text-balance">{job.title}</h1>
+                <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-slate-600">
                   <span className="inline-flex items-center gap-2"><Building2 className="h-4 w-4" />{job.company}</span>
                   <span className="inline-flex items-center gap-2"><MapPin className="h-4 w-4" />{job.countryFlag} {job.location}</span>
                   <span className="inline-flex items-center gap-2"><CalendarDays className="h-4 w-4" />{new Intl.DateTimeFormat("en", { month: "short", day: "numeric", year: "numeric" }).format(new Date(job.postedAt))}</span>
@@ -85,8 +85,8 @@ export default async function JobPage({ params }: JobPageProps) {
           </Card>
 
           <Card>
-            <CardContent className="p-6 sm:p-8">
-              <h2 className="text-2xl font-semibold text-slate-950">Why candidates click through</h2>
+            <CardContent className="p-3 sm:p-4 md:p-6 lg:p-8">
+              <h2 className="text-xl sm:text-2xl font-semibold text-slate-950">Why candidates click through</h2>
               <div className="mt-5 grid gap-4 sm:grid-cols-2">
                 {[
                   { title: "Visa sponsorship", text: job.visaSponsorship ? "Highlighted when the listing suggests relocation or work permit support." : "This role does not explicitly mention sponsorship in the source copy." },
@@ -102,14 +102,14 @@ export default async function JobPage({ params }: JobPageProps) {
           </Card>
         </article>
 
-        <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">
+        <aside className="space-y-4 md:space-y-6 lg:sticky lg:top-24 lg:self-start">
           <Card>
-            <CardContent className="space-y-5 p-6">
+            <CardContent className="space-y-5 p-3 sm:p-4 md:p-6">
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.22em] text-slate-500">Apply</p>
                 <h2 className="mt-2 text-xl font-semibold text-slate-950">External application link</h2>
               </div>
-              <a href={job.applyUrl} target="_blank" rel="noreferrer" className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-slate-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800">
+              <a href={job.applyUrl} target="_blank" rel="noreferrer" className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-slate-950 px-4 py-3 min-h-12 text-sm font-semibold text-white transition hover:bg-slate-800">
                 Apply
                 <Sparkles className="h-4 w-4" />
               </a>
@@ -120,30 +120,30 @@ export default async function JobPage({ params }: JobPageProps) {
           </Card>
 
           <Card>
-            <CardContent className="space-y-4 p-6">
-              <h3 className="text-lg font-semibold text-slate-950">Job info</h3>
-              <div className="space-y-3 text-sm text-slate-600">
+            <CardContent className="space-y-4 p-3 sm:p-4 md:p-6">
+              <h3 className="text-base sm:text-lg font-semibold text-slate-950">Job info</h3>
+              <div className="space-y-3 text-xs sm:text-sm text-slate-600">
                 <p><span className="font-medium text-slate-950">Company:</span> {job.company}</p>
                 <p><span className="font-medium text-slate-950">Location:</span> {job.countryFlag} {job.location}</p>
                 <p><span className="font-medium text-slate-950">Country:</span> {job.countryName}</p>
                 <p><span className="font-medium text-slate-950">Job type:</span> {job.jobTypes.join(", ")}</p>
                 <p><span className="font-medium text-slate-950">Salary:</span> {job.salary ?? "Not disclosed"}</p>
-                <p><span className="font-medium text-slate-950">Visa sponsorship:</span> {job.visaSponsorship ? "Likely available" : "Not clearly stated"}</p>
+                <p><span className="font-medium text-slate-950">Visa:</span> {job.visaSponsorship ? "Yes" : "Check"}</p>
               </div>
             </CardContent>
           </Card>
 
           <Card>
-            <CardContent className="space-y-4 p-6">
-              <h3 className="text-lg font-semibold text-slate-950">Share this job</h3>
+            <CardContent className="space-y-4 p-3 sm:p-4 md:p-6">
+              <h3 className="text-base sm:text-lg font-semibold text-slate-950">Share this job</h3>
               <ShareButtons job={job} />
             </CardContent>
           </Card>
 
           {similarJobs.length > 0 ? (
             <Card>
-              <CardContent className="space-y-4 p-6">
-                <h3 className="text-lg font-semibold text-slate-950">Similar jobs</h3>
+              <CardContent className="space-y-4 p-3 sm:p-4 md:p-6">
+                <h3 className="text-base sm:text-lg font-semibold text-slate-950">Similar jobs</h3>
                 <div className="space-y-3">
                   {similarJobs.map((similarJob) => (
                     <a key={similarJob.slug} href={`/jobs/${similarJob.slug}`} className="block rounded-2xl border border-slate-200 p-4 transition hover:border-sky-200 hover:bg-sky-50/40">

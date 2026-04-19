@@ -42,20 +42,20 @@ const industryOptions = [
 
 export function SearchBar({ compact = false, action = "/jobs", titleValue = "", locationValue = "", industryValue = "" }: SearchBarProps) {
   return (
-    <form action={action} method="get" className="rounded-3xl border border-[#c8d0df] bg-white p-4 shadow-xl shadow-[#14213d]/5 sm:p-5">
-      <div className="mb-4 flex items-center gap-2 text-base font-semibold text-[#14213d]">
-        <Search className="h-4 w-4 text-[#b10f2e]" />
-        Find Visa Sponsorship Jobs
+    <form action={action} method="get" className="rounded-3xl border border-[#c8d0df] bg-white p-3 sm:p-4 md:p-5 shadow-xl shadow-[#14213d]/5">
+      <div className="mb-3 sm:mb-4 flex items-center gap-2 text-xs sm:text-sm md:text-base font-semibold text-[#14213d]">
+        <Search className="h-3 w-3 sm:h-4 sm:w-4 shrink-0" />
+        Find Visa Jobs
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-[1fr_1fr_1.2fr_auto] xl:items-end">
-        <label className="grid gap-2 text-sm font-medium text-[#14213d]" htmlFor="location">
+      <div className="grid gap-2 sm:gap-3 md:gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-[1fr_1fr_1.2fr_auto] xl:items-end">
+        <label className="grid gap-1 sm:gap-2 text-xs sm:text-sm font-medium text-[#14213d]" htmlFor="location">
           Location
           <select
             id="location"
             name="location"
             defaultValue={locationValue || "Any Country"}
-            className="h-11 rounded-full border border-[#c8d0df] bg-white px-4 text-sm text-[#14213d] outline-none transition focus:border-[#b10f2e] focus:ring-2 focus:ring-[#f4c9d2]"
+            className="h-10 sm:h-11 rounded-full border border-[#c8d0df] bg-white px-3 sm:px-4 text-xs sm:text-sm text-[#14213d] outline-none transition focus:border-[#b10f2e] focus:ring-2 focus:ring-[#f4c9d2]"
           >
             {countryOptions.map((country) => (
               <option key={country} value={country === "Any Country" ? "" : country}>
@@ -65,13 +65,13 @@ export function SearchBar({ compact = false, action = "/jobs", titleValue = "", 
           </select>
         </label>
 
-        <label className="grid gap-2 text-sm font-medium text-[#14213d]" htmlFor="industry">
-          Industry Classification
+        <label className="grid gap-1 sm:gap-2 text-xs sm:text-sm font-medium text-[#14213d]" htmlFor="industry">
+          Industry
           <select
             id="industry"
             name="industry"
             defaultValue={industryValue || "Any Classification"}
-            className="h-11 rounded-full border border-[#c8d0df] bg-white px-4 text-sm text-[#14213d] outline-none transition focus:border-[#b10f2e] focus:ring-2 focus:ring-[#f4c9d2]"
+            className="h-10 sm:h-11 rounded-full border border-[#c8d0df] bg-white px-3 sm:px-4 text-xs sm:text-sm text-[#14213d] outline-none transition focus:border-[#b10f2e] focus:ring-2 focus:ring-[#f4c9d2]"
           >
             {industryOptions.map((industry) => (
               <option key={industry} value={industry === "Any Classification" ? "" : industry}>
@@ -81,32 +81,26 @@ export function SearchBar({ compact = false, action = "/jobs", titleValue = "", 
           </select>
         </label>
 
-        <label className="grid gap-2 text-sm font-medium text-[#14213d]" htmlFor="q">
+        <label className="grid gap-1 sm:gap-2 text-xs sm:text-sm font-medium text-[#14213d]" htmlFor="q">
           Keywords
-          <Input id="q" name="q" defaultValue={titleValue} placeholder="Enter Keywords" className="h-11" />
+          <Input id="q" name="q" defaultValue={titleValue} placeholder="Keywords" className="h-10 sm:h-11 text-xs sm:text-sm" />
         </label>
 
-        <Button type="submit" className={compact ? "w-full" : "min-w-40"}>
-          Search Jobs
+        <Button type="submit" className={`${compact ? "w-full" : "w-full md:w-auto"} h-10 sm:h-11 text-xs sm:text-sm min-h-10`}>
+          Search
         </Button>
       </div>
 
-      <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-slate-500">
+      <div className="mt-2 sm:mt-3 md:mt-4 flex flex-wrap items-center gap-1 sm:gap-2 text-xs text-slate-500">
         <span>Popular:</span>
-        <Link href="/jobs?q=engineer" className="rounded-full bg-[#eef2fb] px-3 py-1 transition hover:bg-[#e0e8f7]">
+        <Link href="/jobs?q=engineer" className="rounded-full bg-[#eef2fb] px-2 sm:px-3 py-0.5 sm:py-1 text-xs transition hover:bg-[#e0e8f7]">
           Engineer
         </Link>
-        <Link href="/jobs?q=healthcare" className="rounded-full bg-[#eef2fb] px-3 py-1 transition hover:bg-[#e0e8f7]">
+        <Link href="/jobs?q=healthcare" className="rounded-full bg-[#eef2fb] px-2 sm:px-3 py-0.5 sm:py-1 text-xs transition hover:bg-[#e0e8f7]">
           Healthcare
         </Link>
-        <Link href="/jobs?industry=Engineering" className="rounded-full bg-[#eef2fb] px-3 py-1 transition hover:bg-[#e0e8f7]">
+        <Link href="/jobs?industry=Engineering" className="rounded-full bg-[#eef2fb] px-2 sm:px-3 py-0.5 sm:py-1 text-xs transition hover:bg-[#e0e8f7]">
           Engineering
-        </Link>
-        <Link href="/jobs?location=Middle%20East" className="rounded-full bg-[#eef2fb] px-3 py-1 transition hover:bg-[#e0e8f7]">
-          Middle East
-        </Link>
-        <Link href="/jobs?visa=yes" className="rounded-full bg-[#eef2fb] px-3 py-1 transition hover:bg-[#e0e8f7]">
-          Visa sponsorship
         </Link>
       </div>
     </form>
