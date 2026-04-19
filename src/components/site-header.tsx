@@ -64,7 +64,64 @@ export function SiteHeader() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-4 md:gap-6 md:flex">\n          <div className="relative" ref={countriesRef}>\n            <button\n              type="button"\n              className="inline-flex items-center gap-1 text-xs md:text-sm font-medium text-[#334155] transition hover:text-[#b10f2e]"\n              onClick={() => setCountriesOpen((current) => !current)}\n              aria-expanded={countriesOpen}\n              aria-haspopup="menu"\n            >\n              Countries\n              <ChevronDown className={`h-4 w-4 transition-transform ${countriesOpen ? "rotate-180" : "rotate-0"}`} />\n            </button>\n            {countriesOpen ? (\n              <div className="absolute left-1/2 top-10 z-50 w-56 -translate-x-1/2 rounded-2xl border border-[#d6deec] bg-white p-2 shadow-xl shadow-[#14213d]/10" role="menu">\n                {regionItems.map((item) => (\n                  <Link\n                    key={item.href}\n                    href={item.href}\n                    className="block rounded-xl px-3 py-2 text-sm font-medium text-[#14213d] transition hover:bg-[#f4f6fb]"\n                    onClick={() => {\n                      setCountriesOpen(false);\n                    }}\n                  >\n                    {item.label}\n                  </Link>\n                ))}\n              </div>\n            ) : null}\n          </div>\n\n          {navItems.map((item) => (\n            <Link key={item.href} href={item.href} className="text-xs md:text-sm font-medium text-[#334155] transition hover:text-[#b10f2e]">\n              {item.label}\n            </Link>\n          ))}\n        </nav>\n\n        <div className=\"flex items-center gap-1 sm:gap-2\">\n          <Button asChild variant=\"outline\" className=\"hidden sm:inline-flex h-9 sm:h-10 text-xs md:text-sm border-[#c8d0df] text-[#14213d] hover:border-[#b10f2e] hover:text-[#b10f2e] px-2 sm:px-4\">\n            <Link href=\"/advertise\">Advertise</Link>\n          </Button>\n          <Button asChild className=\"hidden sm:inline-flex h-9 sm:h-10 text-xs md:text-sm px-2 sm:px-4\">\n            <Link href=\"/jobs\">Browse</Link>\n          </Button>\n          <button\n            type=\"button\"\n            onClick={() => {\n              setOpen((current) => !current);\n              setCountriesOpen(false);\n            }}\n            className=\"inline-flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl border border-[#c8d0df] bg-white text-[#14213d] md:hidden\"\n            aria-label=\"Toggle navigation\"\n            aria-expanded={open}\n          >\n            {open ? <X className=\"h-5 w-5\" /> : <Menu className=\"h-5 w-5\" />}\n          </button>\n        </div>\n      </div>
+        <nav className="hidden items-center gap-4 md:gap-6 md:flex">
+          <div className="relative" ref={countriesRef}>
+            <button
+              type="button"
+              className="inline-flex items-center gap-1 text-xs md:text-sm font-medium text-[#334155] transition hover:text-[#b10f2e]"
+              onClick={() => setCountriesOpen((current) => !current)}
+              aria-expanded={countriesOpen}
+              aria-haspopup="menu"
+            >
+              Countries
+              <ChevronDown className={`h-4 w-4 transition-transform ${countriesOpen ? "rotate-180" : "rotate-0"}`} />
+            </button>
+            {countriesOpen ? (
+              <div className="absolute left-1/2 top-10 z-50 w-56 -translate-x-1/2 rounded-2xl border border-[#d6deec] bg-white p-2 shadow-xl shadow-[#14213d]/10" role="menu">
+                {regionItems.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="block rounded-xl px-3 py-2 text-sm font-medium text-[#14213d] transition hover:bg-[#f4f6fb]"
+                    onClick={() => {
+                      setCountriesOpen(false);
+                    }}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            ) : null}
+          </div>
+
+          {navItems.map((item) => (
+            <Link key={item.href} href={item.href} className="text-xs md:text-sm font-medium text-[#334155] transition hover:text-[#b10f2e]">
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="flex items-center gap-1 sm:gap-2">
+          <Button asChild variant="outline" className="hidden sm:inline-flex h-9 sm:h-10 text-xs md:text-sm border-[#c8d0df] text-[#14213d] hover:border-[#b10f2e] hover:text-[#b10f2e] px-2 sm:px-4">
+            <Link href="/advertise">Advertise</Link>
+          </Button>
+          <Button asChild className="hidden sm:inline-flex h-9 sm:h-10 text-xs md:text-sm px-2 sm:px-4">
+            <Link href="/jobs">Browse</Link>
+          </Button>
+          <button
+            type="button"
+            onClick={() => {
+              setOpen((current) => !current);
+              setCountriesOpen(false);
+            }}
+            className="inline-flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl border border-[#c8d0df] bg-white text-[#14213d] md:hidden"
+            aria-label="Toggle navigation"
+            aria-expanded={open}
+          >
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
+      </div>
 
       {open ? (
         <div className="border-t border-[#d6deec] bg-white px-4 py-4 md:hidden">
