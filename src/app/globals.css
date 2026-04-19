@@ -1,26 +1,77 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f7f8fb;
+  --foreground: #0b1220;
+  --card: rgba(255, 255, 255, 0.9);
+  --card-border: rgba(11, 18, 32, 0.12);
+  --muted: #475569;
+  --accent: #b10f2e;
+  --accent-dark: #7f0d22;
+  --navy: #14213d;
+  --ink: #05070b;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-poppins);
+  --font-mono: var(--font-ibm-plex-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-poppins), sans-serif;
+  background-image:
+    radial-gradient(circle at 5% 10%, rgba(177, 15, 46, 0.1), transparent 40%),
+    radial-gradient(circle at 92% 18%, rgba(20, 33, 61, 0.14), transparent 38%),
+    linear-gradient(180deg, #fbfbfd 0%, #f4f6fa 50%, #eef1f8 100%);
+}
+
+::selection {
+  background: rgba(177, 15, 46, 0.2);
+}
+
+.glass-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
+  backdrop-filter: blur(20px);
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.prose-safe h2,
+.prose-safe h3 {
+  margin-top: 1.75rem;
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+}
+
+.prose-safe p,
+.prose-safe ul,
+.prose-safe ol {
+  margin-bottom: 1rem;
+  color: #334155;
+}
+
+.prose-safe a {
+  color: #b10f2e;
+  text-decoration: underline;
+}
+
+.prose-safe ul,
+.prose-safe ol {
+  padding-left: 1.25rem;
 }
