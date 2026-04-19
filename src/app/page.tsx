@@ -67,33 +67,35 @@ export default async function Home() {
 
         <div className="relative mx-auto grid min-h-[90vh] max-w-7xl items-center gap-8 px-4 py-12 sm:min-h-screen sm:px-6 lg:grid-cols-2 lg:gap-12 lg:px-8 lg:py-20">
           {/* Left Column - Content */}
-          <div className="space-y-8 lg:-translate-y-8">
+          <div className="relative space-y-8 lg:-translate-y-8">
+            {/* Mobile-only worker background near CTA */}
+            <div className="pointer-events-none absolute right-0 bottom-12 z-0 sm:hidden">
+              <div className="absolute inset-0 rounded-full bg-[#b10f2e]/20 blur-2xl" />
+              <Image
+                src="/worker.png"
+                alt="Professional worker"
+                width={160}
+                height={160}
+                className="relative h-auto w-32 object-contain"
+                loading="eager"
+                priority
+              />
+            </div>
+
             <div className="space-y-6">
-              {/* Mobile-only worker image */}
-              <div className="mx-auto mb-4 flex justify-center lg:hidden">
-                <Image
-                  src="/worker.png"
-                  alt="Professional worker"
-                  width={160}
-                  height={160}
-                  className="h-40 w-40 object-contain"
-                  priority
-                />
-              </div>
-              
-              <h1 className="max-w-4xl text-4xl font-bold tracking-tight text-balance text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] sm:text-5xl lg:text-6xl">
+              <h1 className="relative z-10 max-w-4xl text-4xl font-bold tracking-tight text-balance text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] sm:text-5xl lg:text-6xl">
                 Find Jobs Abroad.
                 <span className="mt-2 block text-white/90">
                   Clean, Fast, Global Listings.
                 </span>
               </h1>
-              <p className="max-w-3xl text-lg leading-8 text-white/90 sm:text-xl">
+              <p className="relative z-10 max-w-3xl text-lg leading-8 text-white/90 sm:text-xl">
                 Search global and regional job sources in one place, then apply on the original website. Built to keep the search simple, clear, and visual.
               </p>
             </div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-wrap gap-4 pt-4">
+            <div className="relative z-10 flex flex-wrap gap-4 pt-4">
               <Button asChild className="h-12 px-6 bg-white text-[#14213d] hover:bg-white/90 hover:shadow-xl">
                 <Link href="/jobs">
                   Browse Jobs
@@ -107,7 +109,7 @@ export default async function Home() {
           </div>
 
           {/* Right Column - Worker Image */}
-          <div className="hidden lg:flex lg:items-start lg:justify-center lg:-translate-y-16">
+          <div className="hidden lg:flex lg:order-0 lg:items-start lg:justify-center lg:pb-0 lg:-translate-y-16">
             <div className="relative">
               {/* Image glow effect */}
               <div className="absolute inset-0 rounded-full bg-[#b10f2e]/20 blur-2xl" />
@@ -116,7 +118,7 @@ export default async function Home() {
                 alt="Professional worker ready for international opportunities"
                 width={180}
                 height={180}
-                className="relative z-10 h-auto w-45 object-contain drop-shadow-2xl"
+                className="relative z-10 h-auto w-28 object-contain drop-shadow-2xl sm:w-36 md:w-40 lg:w-45"
                 loading="eager"
                 priority
               />
