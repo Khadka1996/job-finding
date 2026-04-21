@@ -17,10 +17,10 @@ export function HeroSection({ activeJobs }: HeroSectionProps) {
       {/* Strong dark overlay for text clarity */}
       <div className="absolute inset-0 bg-black/70 sm:bg-black/60" />
 
-      {/* Content and worker image side by side, all at right */}
-      <div className="relative z-10 mx-auto flex h-full w-full max-w-7xl flex-row items-center justify-end px-4 py-8 sm:px-6 lg:px-8">
-        {/* Text and buttons at right */}
-        <div className="flex flex-col items-end justify-center gap-6 text-right max-w-xl w-full">
+      {/* Content and worker image side by side, text at left */}
+      <div className="relative z-10 mx-auto flex h-full w-full max-w-7xl flex-row items-center justify-between px-4 py-8 sm:px-6 lg:px-8">
+        {/* Text and buttons at left */}
+        <div className="flex flex-col items-start justify-center gap-6 text-left max-w-xl w-full">
           <div>
             <h1 className="text-4xl font-extrabold leading-tight text-white sm:text-5xl md:text-5xl lg:text-5xl">
               <span className="block">Work Abroad with</span>
@@ -32,7 +32,7 @@ export function HeroSection({ activeJobs }: HeroSectionProps) {
               Your journey to working abroad starts here.
             </p>
           </div>
-          <div className="mt-3 flex w-full flex-col items-end gap-3 sm:flex-row sm:justify-end">
+          <div className="mt-3 flex w-full flex-col items-start gap-3 sm:flex-row sm:justify-start">
             <Button asChild className="h-11 w-full max-w-xs bg-[#b10f2e] text-white text-base font-bold shadow-lg hover:bg-[#930d24]">
               <Link href="/jobs">Browse Jobs</Link>
             </Button>
