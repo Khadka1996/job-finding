@@ -55,8 +55,8 @@ export function HeroSection({ activeJobs }: HeroSectionProps) {
           <Image
             src="/worker.png"
             alt="Worker"
-            width={140}
-            height={400}
+            width={160}
+            height={480}
             className="object-contain drop-shadow-2xl opacity-90"
             loading="eager"
             priority
