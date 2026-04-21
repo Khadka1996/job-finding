@@ -51,12 +51,12 @@ export function HeroSection({ activeJobs }: HeroSectionProps) {
           </div>
         </div>
         {/* Worker image at far right */}
-        <div className="flex items-end justify-end h-full ml-8">
+        <div className="flex items-end justify-end h-full ml-4 lg:ml-4 xl:ml-2 2xl:ml-0">
           <Image
             src="/worker.png"
             alt="Worker"
-            width={160}
-            height={480}
+            width={180}
+            height={540}
             className="object-contain drop-shadow-2xl opacity-90"
             loading="eager"
             priority
