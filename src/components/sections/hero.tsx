@@ -22,10 +22,10 @@ export function HeroSection({ activeJobs }: HeroSectionProps) {
         {/* Text and buttons at left */}
         <div className="flex flex-col items-start justify-center gap-6 text-left max-w-xl w-full">
           <div>
-            <h1 className="text-4xl font-extrabold leading-tight text-white sm:text-5xl md:text-5xl lg:text-5xl">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight text-white">
               <span className="block">Work Abroad with</span>
               <span className="block">Visa Sponsorship Jobs.</span>
-              <span className="block text-[#ff9100] text-3xl font-extrabold mt-2">Globally. Easily.</span>
+              <span className="block text-[#ff9100] text-lg sm:text-2xl md:text-3xl font-extrabold mt-2">Globally. Easily.</span>
             </h1>
             <p className="mt-4 text-base font-normal text-white/90 sm:text-lg md:text-lg max-w-lg">
               Explore our comprehensive list of verified visa sponsored jobs from all over the world.<br />
