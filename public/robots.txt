@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+Disallow: /private/
+Disallow: /api/
+Disallow: /*.json$
+
+# Crawl delay for bots
+Crawl-delay: 1
+
+# Specific rules for common crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Sitemap
+Sitemap: https://www.visasponsorjobs.com/sitemap.xml

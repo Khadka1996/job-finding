@@ -1,0 +1,28 @@
+{
+  "env": [
+    {
+      "key": "NEXT_PUBLIC_SITE_URL",
+      "description": "The public URL of your site",
+      "value": ""
+    },
+    {
+      "key": "NEXT_PUBLIC_BASE_URL",
+      "description": "The base URL for API calls",
+      "value": ""
+    },
+    {
+      "key": "NEXT_PUBLIC_WHATSAPP_NUMBER",
+      "description": "WhatsApp number for contact",
+      "value": "15551234567"
+    },
+    {
+      "key": "NEXT_PUBLIC_API_TIMEOUT",
+      "description": "API timeout in milliseconds",
+      "value": "5000"
+    }
+  ],
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "framework": "nextjs"
+}

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getMetadata } from "@/lib/metadata";
 import { SearchBar } from "@/components/search-bar";
 import { Filters } from "@/components/filters";
 import { JobCard } from "@/components/job-card";
@@ -11,10 +12,23 @@ type JobsPageProps = {
   searchParams: Promise<JobSearchParams>;
 };
 
-export const metadata: Metadata = {
-  title: "Jobs",
-  description: "Browse visa sponsored jobs with filters for location, job type, and sponsorship availability.",
-};
+export async function generateMetadata(
+  { searchParams }: JobsPageProps
+): Promise<Metadata> {
+  const params = await searchParams;
+  const query = params.q || "visa sponsorship";
+  const location = params.location || "worldwide";
+  
+  const title = `${query.charAt(0).toUpperCase() + query.slice(1)} Jobs in ${location} | Visa Sponsor Jobs`;
+  const description = `Find visa sponsored ${query} jobs in ${location}. Search 50K+ opportunities across 180+ countries with fast filters and real listings.`;
+
+  return getMetadata({
+    title,
+    description,
+  });
+}
+
+export const revalidate = 3600; // Revalidate every hour
 
 export default async function JobsPage({ searchParams }: JobsPageProps) {
   const params = await searchParams;
@@ -29,7 +43,7 @@ export default async function JobsPage({ searchParams }: JobsPageProps) {
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
-      <section className="space-y-6 rounded-4xl border border-[#d6deec] bg-[linear-gradient(135deg,rgba(177,15,46,0.08),rgba(255,255,255,0.96),rgba(20,33,61,0.1))] p-6 sm:p-8">
+      <section className="space-y-6 rounded-4xl border border-[#d6deec] bg-white p-6 sm:p-8">
         <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
           <div className="space-y-3">
             <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#b10f2e]">Job listings</p>
@@ -39,18 +53,10 @@ export default async function JobsPage({ searchParams }: JobsPageProps) {
             </p>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-3">
-            <div className="rounded-3xl border border-[#d6deec] bg-white p-4">
+          <div className="grid gap-3 sm:grid-cols-1">
+            <div className="rounded-3xl border border-[#d6deec] bg-slate-50 p-4">
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Total jobs</p>
               <p className="mt-2 text-3xl font-semibold text-[#14213d]">{result.total}</p>
-            </div>
-            <div className="rounded-3xl border border-[#d6deec] bg-white p-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">On this page</p>
-              <p className="mt-2 text-3xl font-semibold text-[#14213d]">{result.jobs.length}</p>
-            </div>
-            <div className="rounded-3xl border border-[#d6deec] bg-white p-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Page</p>
-              <p className="mt-2 text-3xl font-semibold text-[#14213d]">{result.page}/{result.totalPages}</p>
             </div>
           </div>
         </div>
@@ -64,7 +70,6 @@ export default async function JobsPage({ searchParams }: JobsPageProps) {
           <p className="text-sm text-slate-600">
             Showing {result.jobs.length} of {result.total} jobs found
           </p>
-          <p className="text-sm text-slate-500">Page {result.page} of {result.totalPages}</p>
         </div>
 
         {result.jobs.length > 0 ? (

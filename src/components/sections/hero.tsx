@@ -27,8 +27,7 @@ export function HeroSection({ activeJobs }: HeroSectionProps) {
               <span className="block">Visa Sponsorship Jobs.</span>
               <span className="block mt-2" style={{
                 color: '#fff',
-                WebkitTextStroke: '2px #b10f2e',
-                textStroke: '2px #b10f2e',
+                WebkitTextStroke: '1px #b10f2e',
                 fontWeight: 800
               }}>Globally. Easily.</span>
             </h1>
@@ -51,7 +50,7 @@ export function HeroSection({ activeJobs }: HeroSectionProps) {
           </div>
         </div>
         {/* Worker image at far right */}
-        <div className="flex items-end justify-end h-full ml-4 lg:ml-2 xl:ml-0 2xl:-ml-2">
+        <div className="flex items-end justify-end h-full ml-2 lg:ml-0 xl:-ml-20">
           <Image
             src="/worker.png"
             alt="Worker"

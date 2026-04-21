@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import Script from "next/script";
 import { ArrowUpRight, Building2, CalendarDays, MapPin, Sparkles } from "lucide-react";
 import { BookmarkButton } from "@/components/bookmark-button";
 import { ShareButtons } from "@/components/share-buttons";
@@ -8,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { getJobBySlug, getJobs } from "@/lib/api";
+import { generateJobMetadata, generateJobStructuredData, siteConfig } from "@/lib/metadata";
 
 type JobPageProps = {
   params: Promise<{ slug: string }>;
@@ -23,16 +25,10 @@ export async function generateMetadata({ params }: JobPageProps): Promise<Metada
     };
   }
 
-  return {
-    title: job.title,
-    description: job.shortDescription,
-    openGraph: {
-      title: job.title,
-      description: job.shortDescription,
-      url: `/jobs/${job.slug}`,
-    },
-  };
+  return generateJobMetadata(job, siteConfig.url);
 }
+
+export const revalidate = 3600; // Revalidate every hour
 
 export default async function JobPage({ params }: JobPageProps) {
   const { slug } = await params;
@@ -44,8 +40,17 @@ export default async function JobPage({ params }: JobPageProps) {
 
   const similarJobs = (await getJobs({ q: job.title.split(" ")[0], page: "1" })).jobs.filter((item) => item.slug !== job.slug).slice(0, 2);
 
+  const structuredData = generateJobStructuredData(job, siteConfig.url);
+
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
+      {/* JSON-LD Structured Data */}
+      <Script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        suppressHydrationWarning
+      />
+
       <div className="grid gap-6 md:gap-8 lg:grid-cols-[minmax(0,1fr)_340px]">
         <article className="space-y-4 md:space-y-6">
           <Card>

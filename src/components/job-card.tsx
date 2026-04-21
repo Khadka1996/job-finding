@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight, Building2, MapPin, Sparkles } from "lucide-react";
+import { ArrowUpRight, Building2, MapPin } from "lucide-react";
 import { BookmarkButton } from "@/components/bookmark-button";
 import { ShareButtons } from "@/components/share-buttons";
 import { Button } from "@/components/ui/button";
@@ -13,7 +13,7 @@ type JobCardProps = {
   featured?: boolean;
 };
 
-export function JobCard({ job, featured = false }: JobCardProps) {
+export const JobCard = ({ job, featured = false }: JobCardProps) => {
   return (
     <Card className={`group overflow-hidden border-[#d6deec] transition duration-200 hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#14213d]/10 ${featured ? "ring-2 ring-[#f3c9d3]" : ""}`}>
       <CardHeader className="p-3 sm:p-4 md:p-5">
@@ -57,24 +57,21 @@ export function JobCard({ job, featured = false }: JobCardProps) {
         </div>
       </CardContent>
 
-      <CardFooter className="flex flex-col gap-2 p-3 sm:p-4 md:p-5">
-        <div className="flex w-full flex-col gap-2 sm:flex-row sm:gap-2">
-          <Button asChild variant="secondary" className="h-9 sm:h-10 text-xs sm:text-sm min-h-10">
-            <Link href={buildJobPath(job)}>
-              View Details
-              <ArrowUpRight className="h-3 w-3 sm:h-4 sm:w-4" />
-            </Link>
-          </Button>
-          <a href={job.applyUrl} target="_blank" rel="noreferrer" className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 rounded-full bg-[#14213d] px-4 py-2 sm:py-2.5 min-h-10 text-xs sm:text-sm font-medium text-white transition hover:bg-[#0e1831]">
-            Apply
-            <Sparkles className="h-3 w-3 sm:h-4 sm:w-4" />
-          </a>
-        </div>
-        <div className="w-full border-t border-slate-200/70 pt-2 sm:pt-3">
+      <CardFooter className="flex flex-col gap-3 p-3 sm:p-4 md:p-5">
+        {/* View Details Button */}
+        <Button asChild variant="secondary" className="w-full h-9 sm:h-10 text-xs sm:text-sm">
+          <Link href={buildJobPath(job)}>
+            View Details
+            <ArrowUpRight className="h-3 w-3 sm:h-4 sm:w-4" />
+          </Link>
+        </Button>
+
+        {/* Share Section */}
+        <div className="w-full">
           <p className="mb-2 text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Share</p>
           <ShareButtons job={job} compact />
         </div>
       </CardFooter>
     </Card>
   );
-}
+};

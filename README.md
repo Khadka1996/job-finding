@@ -69,6 +69,8 @@ Create a `.env.local` file in the project root.
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 NEXT_PUBLIC_WHATSAPP_NUMBER=15551234567
 NEXT_PUBLIC_CONTACT_PHONE=+1 555 123 4567
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+NEXT_PUBLIC_ADSENSE_CLIENT_ID=ca-pub-XXXXXXXXXXXXXXXX
 ```
 
 ### Variable Notes
@@ -76,6 +78,8 @@ NEXT_PUBLIC_CONTACT_PHONE=+1 555 123 4567
 - `NEXT_PUBLIC_SITE_URL`: base URL for metadata and share links.
 - `NEXT_PUBLIC_WHATSAPP_NUMBER`: used in contact/footer floating WhatsApp CTA.
 - `NEXT_PUBLIC_CONTACT_PHONE`: shown in site info bar.
+- `NEXT_PUBLIC_GA_MEASUREMENT_ID`: enables Google Analytics (GA4) globally.
+- `NEXT_PUBLIC_ADSENSE_CLIENT_ID`: enables Google AdSense script globally.
 
 Fallback defaults are implemented in code for local development.
 
