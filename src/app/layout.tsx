@@ -71,12 +71,15 @@ export default function RootLayout({
       lang="en"
       suppressHydrationWarning
       className={`${poppins.variable} ${ibmPlexMono.variable}`}
+      data-scroll-behavior="smooth"
     >
       <head>
         {/* Preload critical resources */}
         <link rel="preload" as="image" href="/bg-image.jpg" />
         <link rel="preload" as="image" href="/worker.png" />
         <link rel="preload" as="image" href="/globe.svg" />
+        {/* Vercel compatibility meta tag */}
+        <meta name="vercel" content="deploy" />
 
         {/* Prefetch DNS for external resources */}
         <link rel="dns-prefetch" href="https://www.arbeitnow.com" />

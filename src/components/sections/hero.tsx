@@ -56,6 +56,7 @@ export function HeroSection({ activeJobs }: HeroSectionProps) {
             alt="Worker"
             width={160}
             height={480}
+            style={{ width: "160px", height: "auto" }}
             className="object-contain drop-shadow-2xl opacity-90"
             loading="eager"
             priority
