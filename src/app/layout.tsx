@@ -1,18 +1,15 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, Poppins } from "next/font/google";
+import { IBM_Plex_Mono, Montserrat } from "next/font/google";
 import Script from "next/script";
 import { Suspense } from "react";
 import "./globals.css";
-import { SiteFooter } from "@/components/site-footer";
-import { SiteInfoBar } from "@/components/site-info-bar";
-import { SiteHeader } from "@/components/site-header";
-import { WhatsAppButton } from "@/components/whatsapp-button";
+import { SiteChrome } from "@/components/site-chrome";
 import { getMetadata, siteConfig } from "@/lib/metadata";
 
-const poppins = Poppins({
-  variable: "--font-poppins",
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
   display: "swap",
 });
 
@@ -70,7 +67,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${poppins.variable} ${ibmPlexMono.variable}`}
+      className={`${montserrat.variable} ${ibmPlexMono.variable}`}
       data-scroll-behavior="smooth"
     >
       <head>
@@ -143,15 +140,11 @@ export default function RootLayout({
           </>
         ) : null}
 
-        <SiteInfoBar />
-        <SiteHeader />
-        <main className="flex-1">
+        <SiteChrome>
           <Suspense fallback={<div className="h-screen bg-white" />}>
             {children}
           </Suspense>
-        </main>
-        <SiteFooter />
-        <WhatsAppButton />
+        </SiteChrome>
       </body>
     </html>
   );

@@ -15,13 +15,17 @@ type SearchBarProps = {
 };
 
 const countryOptions = [
-  "Any Country",
-  "United States",
-  "United Kingdom",
-  "Australia",
-  "United Arab Emirates",
-  "Qatar",
-  "Saudi Arabia",
+  { label: "Any Country", value: "" },
+  { label: "🇦🇪 United Arab Emirates (Dubai)", value: "United Arab Emirates" },
+  { label: "🇶🇦 Qatar", value: "Qatar" },
+  { label: "🇸🇦 Saudi Arabia", value: "Saudi Arabia" },
+  { label: "🇰🇼 Kuwait", value: "Kuwait" },
+  { label: "🇴🇲 Oman", value: "Oman" },
+  { label: "🇧🇭 Bahrain", value: "Bahrain" },
+  { label: "🇲🇾 Malaysia", value: "Malaysia" },
+  { label: "🇮🇱 Israel", value: "Israel" },
+  { label: "🇬🇧 United Kingdom", value: "United Kingdom" },
+  { label: "🇩🇪 Germany", value: "Germany" },
 ];
 
 const industryOptions = [
@@ -91,12 +95,12 @@ export function SearchBar({
           <select
             id="location"
             name="location"
-            defaultValue={locationValue || "Any Country"}
+            defaultValue={locationValue || ""}
             className={selectClasses}
           >
             {countryOptions.map((country) => (
-              <option key={country} value={country === "Any Country" ? "" : country}>
-                {country}
+              <option key={country.value || "any-country"} value={country.value}>
+                {country.label}
               </option>
             ))}
           </select>

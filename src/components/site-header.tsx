@@ -8,21 +8,35 @@ import { Button } from "@/components/ui/button";
 
 const navItems = [
   { href: "/jobs", label: "Jobs" },
-  { href: "/jobs?industry=Engineering", label: "Industries" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
 
 const countryItems = [
-  { href: "/jobs?location=United%20Kingdom", label: "UK" },
-  { href: "/jobs?location=Australia", label: "Australia" },
-  { href: "/jobs?location=New%20Zealand", label: "New Zealand" },
-  { href: "/jobs?location=Canada", label: "Canada" },
-  { href: "/jobs?location=United%20States", label: "USA" },
-  { href: "/jobs?location=Ireland", label: "Ireland" },
-  { href: "/jobs?location=United%20Arab%20Emirates", label: "UAE" },
-  { href: "/jobs?location=Qatar", label: "Qatar" },
-  { href: "/jobs?location=Saudi%20Arabia", label: "Saudi Arabia" },
+  { href: "/jobs?location=United%20Arab%20Emirates", label: "🇦🇪 UAE" },
+  { href: "/jobs?location=Qatar", label: "🇶🇦 Qatar" },
+  { href: "/jobs?location=Saudi%20Arabia", label: "🇸🇦 Saudi Arabia" },
+  { href: "/jobs?location=Kuwait", label: "🇰🇼 Kuwait" },
+  { href: "/jobs?location=Oman", label: "🇴🇲 Oman" },
+  { href: "/jobs?location=Bahrain", label: "🇧🇭 Bahrain" },
+  { href: "/jobs?location=Malaysia", label: "🇲🇾 Malaysia" },
+  { href: "/jobs?location=Israel", label: "🇮🇱 Israel" },
+  { href: "/jobs?location=United%20Kingdom", label: "🇬🇧 UK" },
+  { href: "/jobs?location=Germany", label: "🇩🇪 Germany" },
+  { href: "/jobs?location=Australia", label: "🇦🇺 Australia" },
+  { href: "/jobs?location=New%20Zealand", label: "🇳🇿 New Zealand" },
+  { href: "/jobs?location=Canada", label: "🇨🇦 Canada" },
+  { href: "/jobs?location=United%20States", label: "🇺🇸 USA" },
+  { href: "/jobs?location=Ireland", label: "🇮🇪 Ireland" },
+  { href: "/jobs?location=Singapore", label: "🇸🇬 Singapore" },
+  { href: "/jobs?location=Netherlands", label: "🇳🇱 Netherlands" },
+  { href: "/jobs?location=France", label: "🇫🇷 France" },
+  { href: "/jobs?location=Italy", label: "🇮🇹 Italy" },
+  { href: "/jobs?location=Portugal", label: "🇵🇹 Portugal" },
+  { href: "/jobs?location=Spain", label: "🇪🇸 Spain" },
+  { href: "/jobs?location=Japan", label: "🇯🇵 Japan" },
+  { href: "/jobs?location=South%20Korea", label: "🇰🇷 South Korea" },
+  { href: "/jobs?location=India", label: "🇮🇳 India" },
 ];
 
 export function SiteHeader() {
@@ -59,7 +73,10 @@ export function SiteHeader() {
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-2 sm:gap-4 px-3 py-3 sm:px-6 lg:px-8">
         {/* Logo and Brand */}
         <Link href="/" className="group flex items-center gap-2 sm:gap-3 min-w-0 shrink-0" onClick={() => setOpen(false)}>
-          <div className="flex h-9 w-9 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#b10f2e] to-[#8b0a22] text-white shadow-lg shadow-[#b10f2e]/30 transition-transform group-hover:scale-105">
+          <div
+            className="flex h-9 w-9 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl text-white shadow-lg shadow-[#b10f2e]/30 transition-transform group-hover:scale-105"
+            style={{ background: "linear-gradient(135deg, #b10f2e 0%, #8b0a22 100%)" }}
+          >
             <Image
               src="/globe.svg"
               alt="Visa Sponsor Jobs"
@@ -89,7 +106,7 @@ export function SiteHeader() {
               <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${countriesOpen ? "rotate-180" : "rotate-0"}`} />
             </button>
             {countriesOpen ? (
-              <div className="absolute left-1/2 top-10 z-50 w-56 -translate-x-1/2 rounded-2xl border border-[#d6deec] bg-white p-2 shadow-xl shadow-[#14213d]/10" role="menu">
+              <div className="absolute left-1/2 top-10 z-50 max-h-[60vh] w-64 -translate-x-1/2 overflow-y-auto rounded-2xl border border-[#d6deec] bg-white p-2 shadow-xl shadow-[#14213d]/10" role="menu">
                 {countryItems.map((item) => (
                   <Link
                     key={item.href}
@@ -118,7 +135,7 @@ export function SiteHeader() {
             <Link href="/advertise">Advertise</Link>
           </Button>
           <Button asChild className="h-9 px-4">
-            <Link href="/jobs">Browse Jobs</Link>
+            <Link href="/bookmarks">Bookmarked Jobs</Link>
           </Button>
         </div>
 
@@ -185,8 +202,8 @@ export function SiteHeader() {
                 </Link>
               </Button>
               <Button asChild className="h-10">
-                <Link href="/jobs" onClick={() => setOpen(false)}>
-                  Browse Jobs
+                <Link href="/bookmarks" onClick={() => setOpen(false)}>
+                  Bookmarked Jobs
                 </Link>
               </Button>
             </div>

@@ -5,9 +5,11 @@ const REMOTIVE_API = "https://remotive.com/api/remote-jobs";
 const THE_MUSE_API = "https://www.themuse.com/api/public/jobs";
 const REMOTE_OK_API = "https://remoteok.com/api";
 const JOBICY_API = "https://jobicy.com/api/v2/remote-jobs";
+const HIMALAYAS_API = "https://himalayas.app/jobs/api?limit=20";
 const ARBEITNOW_PAGES = 8;
 const THE_MUSE_PAGES = 20;
 const JOBICY_COUNT = 100;
+const HIMALAYAS_PAGES = 20;
 const DEFAULT_PAGE_SIZE = 15;
 
 interface ArbeitnowJob {
@@ -118,6 +120,25 @@ interface JobicyJob {
 
 interface JobicyResponse {
   jobs?: JobicyJob[];
+}
+
+interface HimalayasJob {
+  guid?: string;
+  title?: string;
+  companyName?: string;
+  companyLogo?: string;
+  employmentType?: string;
+  locationRestrictions?: Array<string | { name?: string }>;
+  categories?: string[];
+  seniority?: string[];
+  pubDate?: string;
+  description?: string;
+  excerpt?: string;
+  applicationLink?: string;
+}
+
+interface HimalayasResponse {
+  jobs?: HimalayasJob[];
 }
 
 const COUNTRY_ALIASES: Record<string, { countryName: string; countryCode: string }> = {
@@ -521,12 +542,32 @@ function matchesQuery(job: Job, query: string) {
   return terms.every((term) => searchable.includes(term));
 }
 
+function isValidSlug(slug: string): boolean {
+  // Check if slug contains URL-like patterns or malformed data
+  if (!slug) return false;
+  // Check for URL indicators: protocols, domains, paths
+  if (/https?|\.com|\.app|\.net|\.org|\/|:/i.test(slug)) return false;
+  // Check for extremely long segments (likely malformed)
+  if (slug.split('-').some(segment => segment.length > 25)) return false;
+  // Slug should have alphanumeric and dashes only after cleaning
+  return /^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug);
+}
+
 function normalizeArbeitnowJob(raw: ArbeitnowJob, index: number): Job {
   const description = raw.description ? cleanHtml(raw.description) : "No description provided by the source API.";
   const title = raw.title?.trim() || "Untitled role";
   const company = raw.company_name?.trim() || "Confidential company";
   const location = raw.location?.trim() || (raw.remote ? "Remote" : "Worldwide");
-  const slugBase = raw.slug?.trim() || `${title}-${company}-${location}`;
+  
+  // Only use raw.slug if it looks valid; otherwise generate from title-company-location
+  let slugBase: string;
+  const rawSlug = raw.slug?.trim();
+  if (rawSlug && isValidSlug(rawSlug.toLowerCase())) {
+    slugBase = rawSlug;
+  } else {
+    slugBase = `${title}-${company}-${location}`;
+  }
+  
   const slug = slugBase
     .toLowerCase()
     .replace(/&/g, "and")
@@ -662,7 +703,16 @@ function normalizeRemoteOkJob(raw: RemoteOkJob): Job {
   const title = raw.position?.trim() || "Untitled role";
   const company = raw.company?.trim() || "Confidential company";
   const description = raw.description ? cleanHtml(raw.description) : "No description provided by the source API.";
-  const slugBase = raw.slug?.trim() || `${title}-${company}-${location}`;
+  
+  // Only use raw.slug if it looks valid; otherwise generate from title-company-location
+  let slugBase: string;
+  const rawSlug = raw.slug?.trim();
+  if (rawSlug && isValidSlug(rawSlug.toLowerCase())) {
+    slugBase = rawSlug;
+  } else {
+    slugBase = `${title}-${company}-${location}`;
+  }
+  
   const slug = slugBase
     .toLowerCase()
     .replace(/&/g, "and")
@@ -722,7 +772,16 @@ function normalizeJobicyJob(raw: JobicyJob): Job {
   const description = raw.jobDescription
     ? cleanHtml(raw.jobDescription)
     : raw.jobExcerpt?.trim() || "No description provided by the source API.";
-  const slugBase = raw.jobSlug?.trim() || `${title}-${company}-${location}`;
+  
+  // Only use raw.jobSlug if it looks valid; otherwise generate from title-company-location
+  let slugBase: string;
+  const rawJobSlug = raw.jobSlug?.trim();
+  if (rawJobSlug && isValidSlug(rawJobSlug.toLowerCase())) {
+    slugBase = rawJobSlug;
+  } else {
+    slugBase = `${title}-${company}-${location}`;
+  }
+  
   const slug = slugBase
     .toLowerCase()
     .replace(/&/g, "and")
@@ -771,6 +830,58 @@ function normalizeJobicyJob(raw: JobicyJob): Job {
     categories: (raw.jobIndustry ?? []).map((item) => item.toLowerCase()).slice(0, 6),
     salary,
     source: "Jobicy",
+  };
+}
+
+function normalizeHimalayasJob(raw: HimalayasJob, index: number): Job {
+  const description = raw.description || raw.excerpt || "No description provided by the source API.";
+  const title = raw.title?.trim() || "Untitled role";
+  const company = raw.companyName?.trim() || "Confidential company";
+  const locations = (raw.locationRestrictions ?? [])
+    .map((item) => (typeof item === "string" ? item : item?.name ?? ""))
+    .filter(Boolean);
+  const location = locations.length > 0 ? locations.join(", ") : "Remote";
+
+  const slugBase = `${title}-${company}-${location}`;
+  const slug = slugBase
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+  const country = inferCountryFromLocation(location);
+
+  return {
+    id: raw.guid ?? `himalayas-${slug}-${index}`,
+    slug: slug || `job-${index}`,
+    title,
+    company,
+    location,
+    countryName: country.countryName,
+    countryCode: country.countryCode,
+    countryFlag: country.countryFlag,
+    remote: location.toLowerCase().includes("remote"),
+    visaSponsorship: inferVisaSponsorship(
+      {
+        title,
+        location,
+        description,
+        tags: raw.categories,
+      },
+      description
+    ),
+    jobTypes: inferJobTypes({
+      title,
+      job_types: [raw.employmentType || "Full Time"],
+    }),
+    description,
+    shortDescription: getShortDescription(description),
+    applyUrl: raw.applicationLink || "https://himalayas.app",
+    companyLogo: raw.companyLogo ?? null,
+    postedAt: raw.pubDate ?? new Date().toISOString(),
+    categories: (raw.categories ?? []).map((c) => c.toLowerCase()).filter(Boolean).slice(0, 5),
+    salary: null,
+    source: "Himalayas",
   };
 }
 
@@ -938,13 +1049,42 @@ async function fetchJobicyJobs() {
   return Array.isArray(data.jobs) ? data.jobs : [];
 }
 
+async function fetchHimalayasJobs() {
+  const pages = Array.from({ length: HIMALAYAS_PAGES }, (_, index) => index * 20);
+  
+  const responses = await Promise.allSettled(
+    pages.map(async (offset) => {
+      const response = await fetch(`${HIMALAYAS_API}&offset=${offset}`, {
+        next: { revalidate: 3600 },
+        headers: {
+          Accept: "application/json",
+          "Accept-Language": "en-US,en;q=0.9",
+          "User-Agent": "VisaSponsorJobs/1.0",
+        },
+      });
+
+      if (!response.ok) {
+        return null;
+      }
+
+      const data = (await response.json()) as HimalayasResponse;
+      return Array.isArray(data.jobs) ? data.jobs : [];
+    })
+  );
+
+  return responses
+    .filter((r) => r.status === "fulfilled" && r.value !== null)
+    .flatMap((r) => (r.status === "fulfilled" ? r.value || [] : []));
+}
+
 async function getAllJobs() {
-  const [arbeitnow, remotive, muse, remoteOk, jobicy] = await Promise.allSettled([
+  const [arbeitnow, remotive, muse, remoteOk, jobicy, himalayas] = await Promise.allSettled([
     fetchArbeitnowJobs(),
     fetchRemotiveJobs(),
     fetchTheMuseJobs(),
     fetchRemoteOkJobs(),
     fetchJobicyJobs(),
+    fetchHimalayasJobs(),
   ]);
 
   const jobsFromArbeitnow = arbeitnow.status === "fulfilled" ? normalizeJobs(arbeitnow.value) : [];
@@ -952,9 +1092,13 @@ async function getAllJobs() {
   const jobsFromMuse = muse.status === "fulfilled" ? muse.value.map(normalizeTheMuseJob) : [];
   const jobsFromRemoteOk = remoteOk.status === "fulfilled" ? remoteOk.value.map(normalizeRemoteOkJob) : [];
   const jobsFromJobicy = jobicy.status === "fulfilled" ? jobicy.value.map(normalizeJobicyJob) : [];
+  const jobsFromHimalayas = himalayas.status === "fulfilled" ? himalayas.value.map((job, idx) => normalizeHimalayasJob(job, idx)) : [];
 
-  return dedupeJobs([...jobsFromArbeitnow, ...jobsFromRemotive, ...jobsFromMuse, ...jobsFromRemoteOk, ...jobsFromJobicy]);
+  const allJobs = dedupeJobs([...jobsFromArbeitnow, ...jobsFromRemotive, ...jobsFromMuse, ...jobsFromRemoteOk, ...jobsFromJobicy, ...jobsFromHimalayas]);
+  return allJobs.filter((job) => job.companyLogo !== null);
 }
+
+export { getAllJobs };
 
 export async function getJobs(params: JobSearchParams = {}) {
   try {
@@ -1025,7 +1169,40 @@ export async function getJobBySlug(slug: string) {
 
   try {
     const allJobs = await getAllJobs();
-    return allJobs.find((job) => job.slug === normalizedSlug) ?? null;
+    
+    // Try exact match first
+    let job = allJobs.find((job) => job.slug === normalizedSlug);
+    if (job) return job;
+    
+    // Try matching the slug part after removing source prefix
+    // Some jobs have slugs like "remotive-title-company-location" or "remotive-2088655"
+    const sourcePrefixes = ["arbeitnow-", "remotive-", "themuse-", "remoteok-", "jobicy-", "himalayas-"];
+    for (const prefix of sourcePrefixes) {
+      if (normalizedSlug.startsWith(prefix)) {
+        const slugWithoutPrefix = normalizedSlug.slice(prefix.length);
+        
+        // Try exact match without prefix
+        job = allJobs.find((j) => j.slug === slugWithoutPrefix);
+        if (job) return job;
+        
+        // Try matching by ID if it looks like an ID
+        if (/^\d+$/.test(slugWithoutPrefix)) {
+          job = allJobs.find((j) => j.id === slugWithoutPrefix || j.id === `${prefix.slice(0, -1)}-${slugWithoutPrefix}`);
+          if (job) return job;
+        }
+      }
+    }
+    
+    // Try partial matching - if they share enough slug parts, consider it a match
+    job = allJobs.find((j) => {
+      const jobSlugParts = j.slug.split("-").filter(p => p.length > 2);
+      const paramSlugParts = normalizedSlug.split("-").filter(p => p.length > 2);
+      const commonParts = jobSlugParts.filter(part => paramSlugParts.includes(part));
+      return commonParts.length >= 2;
+    });
+    if (job) return job;
+    
+    return null;
   } catch {
     return null;
   }
