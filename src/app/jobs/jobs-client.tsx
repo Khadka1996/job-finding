@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { JobCardSkeleton } from "@/components/job-card-skeleton";
-import { buildJobPath, flagEmojiForLocation, humanizeLabel, type Job } from "@/lib/jobs-page";
+import { buildJobPath, flagEmojiForLocation, humanizeLabel, formatPublishDate, type Job } from "@/lib/jobs-page";
 
 type JobsResponse = {
   jobs?: Job[];
@@ -220,7 +220,7 @@ function JobCard({ job }: { job: Job }) {
 
       <div className="mt-4 flex items-center justify-between gap-3 text-sm text-[#64748b]">
         <span>Publish date</span>
-        <span className="font-semibold text-[#111]">{job.publishDate}</span>
+        <span className="font-semibold text-[#111]">{formatPublishDate(job.publishDate)}</span>
       </div>
     </Link>
   );
@@ -347,32 +347,32 @@ export function JobsClient() {
 
   return (
     <div className="min-h-screen bg-[#f8fafc] text-[#0f172a]">
-      <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
-        <section className="rounded-3xl border border-sky-100 bg-white p-5 shadow-[0_10px_30px_rgba(15,23,42,0.05)] sm:p-6 lg:p-8">
-          <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
-            <div className="space-y-3">
-              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#b10f2e]">Visa jobs board</p>
-              <h1 className="max-w-2xl text-4xl font-bold tracking-tight text-[#0f172a] sm:text-5xl">Find Your Next Visa Sponsored Job</h1>
-              <p className="max-w-3xl text-lg leading-8 text-[#64748b]">Curated listings focused on countries popular with Nepali workers</p>
+      <main className="mx-auto w-full max-w-7xl px-3 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
+        <section className="rounded-2xl sm:rounded-3xl border border-sky-100 bg-white p-4 sm:p-5 shadow-[0_10px_30px_rgba(15,23,42,0.05)] sm:shadow-[0_10px_30px_rgba(15,23,42,0.05)] lg:p-8">
+          <div className="grid gap-4 sm:gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
+            <div className="space-y-2 sm:space-y-3">
+              <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] sm:tracking-[0.24em] text-[#b10f2e]">Visa jobs board</p>
+              <h1 className="max-w-2xl text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#0f172a]">Find Your Next Visa Sponsored Job</h1>
+              <p className="max-w-3xl text-sm sm:text-lg leading-7 sm:leading-8 text-[#64748b]">Curated listings focused on countries popular with Nepali workers</p>
             </div>
 
-            <div className="rounded-[18px] border border-slate-200 bg-[#f8fafc] p-4">
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#64748b]">Live feed</p>
-              <p className="mt-2 text-3xl font-bold text-[#0f172a]">{loading ? "--" : jobs.length}</p>
-              <p className="mt-1 text-base text-[#64748b]" suppressHydrationWarning>
+            <div className="rounded-lg sm:rounded-[18px] border border-slate-200 bg-[#f8fafc] p-3 sm:p-4">
+              <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[#64748b]">Live feed</p>
+              <p className="mt-1 sm:mt-2 text-2xl sm:text-3xl font-bold text-[#0f172a]">{loading ? "--" : jobs.length}</p>
+              <p className="mt-0.5 sm:mt-1 text-xs sm:text-base text-[#64748b]" suppressHydrationWarning>
                 Jobs all over the world
               </p>
             </div>
           </div>
 
           <form
-            className="mt-6 rounded-3xl border border-[#f3c9d3] bg-[#fff7f9] p-4 shadow-inner shadow-[#f3c9d3]/60"
+            className="mt-4 sm:mt-6 rounded-xl sm:rounded-3xl border border-[#f3c9d3] bg-[#fff7f9] p-3 sm:p-4 shadow-inner shadow-[#f3c9d3]/60"
             onSubmit={(event) => event.preventDefault()}
           >
-            <div className="flex flex-col gap-3 xl:flex-row xl:items-center">
-              <label className="relative block flex-2">
+            <div className="flex flex-col gap-2 sm:gap-3">
+              <label className="relative block">
                 <span className="sr-only">Search jobs</span>
-                <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#b10f2e]"><IconSearch /></span>
+                <span className="pointer-events-none absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-[#b10f2e] h-4 w-4 sm:h-4 sm:w-4"><IconSearch /></span>
                 <input
                   type="search"
                   value={searchQuery}
@@ -381,76 +381,78 @@ export function JobsClient() {
                     setPage(1);
                   }}
                   placeholder="Search by title or company"
-                  className="h-12 w-full rounded-2xl border border-[#f3c9d3] bg-white pl-11 pr-4 text-base text-[#0f172a] outline-none transition placeholder:text-[#94a3b8] focus:border-[#b10f2e] focus:outline-none focus:ring-0"
+                  className="h-10 sm:h-12 w-full rounded-lg sm:rounded-2xl border border-[#f3c9d3] bg-white pl-9 sm:pl-11 pr-3 sm:pr-4 text-sm sm:text-base text-[#0f172a] outline-none transition placeholder:text-[#94a3b8] focus:border-[#b10f2e] focus:outline-none focus:ring-0"
                 />
               </label>
 
-              <label className="block flex-1">
-                <span className="sr-only">Filter by location</span>
-                <select
-                  value={selectedLocation}
-                  onChange={(event) => {
-                    setSelectedLocation(event.target.value);
-                    setPage(1);
-                  }}
-                  className="h-12 w-full rounded-2xl border border-[#f3c9d3] bg-white px-4 text-base text-[#0f172a] outline-none transition focus:border-[#b10f2e] focus:outline-none focus:ring-0"
-                >
-                  {availableLocations.map((location) => (
-                    <option key={location} value={location}>
-                      {flagForFilterLabel(location)} {location}
-                    </option>
-                  ))}
-                </select>
-              </label>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
+                <label className="block">
+                  <span className="sr-only">Filter by location</span>
+                  <select
+                    value={selectedLocation}
+                    onChange={(event) => {
+                      setSelectedLocation(event.target.value);
+                      setPage(1);
+                    }}
+                    className="h-10 sm:h-12 w-full rounded-lg sm:rounded-2xl border border-[#f3c9d3] bg-white px-2 sm:px-4 text-xs sm:text-base text-[#0f172a] outline-none transition focus:border-[#b10f2e] focus:outline-none focus:ring-0"
+                  >
+                    {availableLocations.map((location) => (
+                      <option key={location} value={location}>
+                        {flagForFilterLabel(location)} {location}
+                      </option>
+                    ))}
+                  </select>
+                </label>
 
-              <label className="block flex-1">
-                <span className="sr-only">Filter by category</span>
-                <select
-                  value={selectedCategory}
-                  onChange={(event) => {
-                    setSelectedCategory(event.target.value);
-                    setPage(1);
-                  }}
-                  className="h-12 w-full rounded-2xl border border-[#f3c9d3] bg-white px-4 text-base text-[#0f172a] outline-none transition focus:border-[#b10f2e] focus:outline-none focus:ring-0"
-                >
-                  {availableCategories.map((category) => (
-                    <option key={category} value={category}>
-                      {category}
-                    </option>
-                  ))}
-                </select>
-              </label>
+                <label className="block">
+                  <span className="sr-only">Filter by category</span>
+                  <select
+                    value={selectedCategory}
+                    onChange={(event) => {
+                      setSelectedCategory(event.target.value);
+                      setPage(1);
+                    }}
+                    className="h-10 sm:h-12 w-full rounded-lg sm:rounded-2xl border border-[#f3c9d3] bg-white px-2 sm:px-4 text-xs sm:text-base text-[#0f172a] outline-none transition focus:border-[#b10f2e] focus:outline-none focus:ring-0"
+                  >
+                    {availableCategories.map((category) => (
+                      <option key={category} value={category}>
+                        {category}
+                      </option>
+                    ))}
+                  </select>
+                </label>
 
-              <label className="block flex-1">
-                <span className="sr-only">Filter by job type</span>
-                <select
-                  value={selectedType}
-                  onChange={(event) => {
-                    setSelectedType(event.target.value);
-                    setPage(1);
-                  }}
-                  className="h-12 w-full rounded-2xl border border-[#f3c9d3] bg-white px-4 text-base text-[#0f172a] outline-none transition focus:border-[#b10f2e] focus:outline-none focus:ring-0"
-                >
-                  {availableTypes.map((type) => (
-                    <option key={type} value={type}>
-                      {type}
-                    </option>
-                  ))}
-                </select>
-              </label>
+                <label className="block col-span-2 sm:col-span-1">
+                  <span className="sr-only">Filter by job type</span>
+                  <select
+                    value={selectedType}
+                    onChange={(event) => {
+                      setSelectedType(event.target.value);
+                      setPage(1);
+                    }}
+                    className="h-10 sm:h-12 w-full rounded-lg sm:rounded-2xl border border-[#f3c9d3] bg-white px-2 sm:px-4 text-xs sm:text-base text-[#0f172a] outline-none transition focus:border-[#b10f2e] focus:outline-none focus:ring-0"
+                  >
+                    {availableTypes.map((type) => (
+                      <option key={type} value={type}>
+                        {type}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
 
-              <button type="submit" className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl bg-[#b10f2e] px-6 text-base font-semibold text-white transition hover:bg-[#8b0a22] xl:shrink-0">
+              <button type="submit" className="inline-flex h-10 sm:h-12 items-center justify-center gap-2 rounded-lg sm:rounded-2xl bg-[#b10f2e] px-4 sm:px-6 text-xs sm:text-base font-semibold text-white transition hover:bg-[#8b0a22] w-full sm:w-auto">
                 Search
               </button>
             </div>
           </form>
         </section>
 
-        <section className="mt-8 space-y-5">
-          <div className="flex flex-wrap items-center justify-between gap-3">
+        <section className="mt-6 sm:mt-8 space-y-4 sm:space-y-5">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
             <div>
-              <p className="text-base font-semibold text-[#0f172a]">Showing {filteredJobs.length} jobs</p>
-              <p className="text-base text-[#64748b]">Page {safePage} of {totalPages}</p>
+              <p className="text-sm sm:text-base font-semibold text-[#0f172a]">Showing {filteredJobs.length} jobs</p>
+              <p className="text-xs sm:text-base text-[#64748b]">Page {safePage} of {totalPages}</p>
             </div>
             {searchQuery || selectedLocation !== "All" || selectedCategory !== "All" || selectedType !== "All" ? (
               <button
@@ -462,7 +464,7 @@ export function JobsClient() {
                   setSelectedType("All");
                   setPage(1);
                 }}
-                className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-[#475569] transition hover:border-[#cbd5e1] hover:text-[#0f172a]"
+                className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-[#475569] transition hover:border-[#cbd5e1] hover:text-[#0f172a]"
               >
                 <IconClose />
                 Clear filters
@@ -471,18 +473,18 @@ export function JobsClient() {
           </div>
 
           {loading ? (
-            <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            <div className="grid gap-3 sm:gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: 6 }).map((_, index) => (
                 <JobCardSkeleton key={index} />
               ))}
             </div>
           ) : error ? (
-            <div className="rounded-[18px] border border-rose-200 bg-rose-50 p-6 text-rose-900">
-              <p className="text-lg font-semibold">We could not load the job feed</p>
-              <p className="mt-2 text-sm text-rose-800">{error}</p>
+            <div className="rounded-lg sm:rounded-[18px] border border-rose-200 bg-rose-50 p-4 sm:p-6 text-rose-900">
+              <p className="text-base sm:text-lg font-semibold">We could not load the job feed</p>
+              <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-rose-800">{error}</p>
             </div>
           ) : filteredJobs.length > 0 ? (
-            <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3" id="jobs-grid">
+            <div className="grid gap-3 sm:gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3" id="jobs-grid">
               {pageJobs.map((job, index) => (
                 <div
                   key={job.id}
@@ -494,33 +496,33 @@ export function JobsClient() {
               ))}
             </div>
           ) : (
-            <div className="rounded-[18px] border border-slate-200 bg-white p-8 text-center shadow-[0_2px_12px_rgba(0,0,0,0.05)]">
-              <p className="text-lg font-semibold text-[#0f172a]">No jobs match your filters</p>
-              <p className="mt-2 text-sm text-[#64748b]">Try a broader keyword search or clear the filters to see more results.</p>
+            <div className="rounded-lg sm:rounded-[18px] border border-slate-200 bg-white p-6 sm:p-8 text-center shadow-[0_2px_12px_rgba(0,0,0,0.05)]">
+              <p className="text-base sm:text-lg font-semibold text-[#0f172a]">No jobs match your filters</p>
+              <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-[#64748b]">Try a broader keyword search or clear the filters to see more results.</p>
             </div>
           )}
 
           {filteredJobs.length > 0 ? (
-            <div className="flex items-center justify-center gap-4 pt-2">
+            <div className="flex items-center justify-center gap-2 sm:gap-4 pt-2">
               <button
                 type="button"
                 onClick={() => setPage((current) => Math.max(1, current - 1))}
                 disabled={safePage === 1}
-                className="inline-flex h-10 items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-4 text-sm font-medium text-[#334155] transition hover:border-[#0ea5e9] hover:text-[#0ea5e9] disabled:cursor-not-allowed disabled:opacity-40"
+                className="inline-flex h-9 sm:h-10 items-center justify-center gap-1 sm:gap-2 rounded-full border border-slate-200 bg-white px-2 sm:px-4 text-xs sm:text-sm font-medium text-[#334155] transition hover:border-[#0ea5e9] hover:text-[#0ea5e9] disabled:cursor-not-allowed disabled:opacity-40"
               >
                 <IconChevronLeft />
-                Prev
+                <span className="hidden sm:inline">Prev</span>
               </button>
 
-              <div className="text-sm font-medium text-[#334155]">Page {safePage} of {totalPages}</div>
+              <div className="text-xs sm:text-sm font-medium text-[#334155]">Page {safePage} of {totalPages}</div>
 
               <button
                 type="button"
                 onClick={() => setPage((current) => Math.min(totalPages, current + 1))}
                 disabled={safePage === totalPages}
-                className="inline-flex h-10 items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-4 text-sm font-medium text-[#334155] transition hover:border-[#0ea5e9] hover:text-[#0ea5e9] disabled:cursor-not-allowed disabled:opacity-40"
+                className="inline-flex h-9 sm:h-10 items-center justify-center gap-1 sm:gap-2 rounded-full border border-slate-200 bg-white px-2 sm:px-4 text-xs sm:text-sm font-medium text-[#334155] transition hover:border-[#0ea5e9] hover:text-[#0ea5e9] disabled:cursor-not-allowed disabled:opacity-40"
               >
-                Next
+                <span className="hidden sm:inline">Next</span>
                 <IconChevronRight />
               </button>
             </div>
