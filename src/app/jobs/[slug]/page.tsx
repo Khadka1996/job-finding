@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { buildJobPath, decodeHtmlEntities } from "@/lib/jobs-page";
+import { buildJobPath, decodeHtmlEntities, isValidLogoUrl } from "@/lib/jobs-page";
 import { getJobBySlug, getJobs } from "@/lib/api";
 import { siteConfig } from "@/lib/metadata";
 import { BookmarkButton } from "@/components/bookmark-button";
+import { CompanyLogoBadge } from "@/components/company-logo-badge";
 
 type JobPageProps = {
   params: Promise<{ slug: string }>;
@@ -47,6 +48,7 @@ export default async function JobPage({ params }: JobPageProps) {
   const cleanLocation = decodeHtmlEntities(job.location || "Worldwide");
   const cleanCategories = (job.categories ?? []).map((category) => decodeHtmlEntities(category));
   const cleanSalary = job.salary ? decodeHtmlEntities(job.salary).trim() : "Not disclosed";
+  const companyLogoUrl: string | null = isValidLogoUrl(job.companyLogo) ? job.companyLogo ?? null : null;
   const postedDate = job.postedAt
     ? new Date(job.postedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
     : "Unknown";
@@ -280,6 +282,58 @@ export default async function JobPage({ params }: JobPageProps) {
           
           {/* Left column: main content */}
           <div style={{ minWidth: 0 }}>
+            <div className="mobile-job-summary">
+              <div style={{ marginBottom: 24 }}>
+                <div style={{ display: "flex", alignItems: "flex-start", gap: 14, marginBottom: 16 }}>
+                  <div style={{ width: 56, height: 56, flexShrink: 0, borderRadius: 16, background: "linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)", border: "1px solid #dbe3ee", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <CompanyLogoBadge logoUrl={companyLogoUrl} companyName={cleanCompanyName} />
+                  </div>
+
+                  <div style={{ minWidth: 0, flex: 1 }}>
+                    <div style={{ fontSize: 11, color: "#94a3b8", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 6 }}>Company</div>
+                    <div style={{ fontSize: 18, fontWeight: 800, color: "#0f172a", lineHeight: 1.2 }}>{cleanCompanyName}</div>
+                  </div>
+                </div>
+
+                <div style={{ display: "grid", gap: 14 }}>
+                  <div>
+                    <div style={{ fontSize: 11, color: "#94a3b8", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 6 }}>Location</div>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 15, color: "#374151", fontWeight: 500 }}>
+                      <span style={{ fontSize: 18 }}>{getFlagEmoji(cleanLocation)}</span>
+                      <span>{cleanLocation}</span>
+                    </div>
+                  </div>
+
+                  {cleanCategories.length > 0 ? (
+                    <div>
+                      <div style={{ fontSize: 11, color: "#94a3b8", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 8 }}>Category</div>
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                        {cleanCategories.map((cat) => (
+                          <span key={cat} style={{ background: "#e8f5e9", color: "#2e7d32", borderRadius: 20, fontSize: 13, padding: "6px 14px", fontWeight: 600 }}>
+                            {cat}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  ) : null}
+
+                  <div>
+                    <div style={{ fontSize: 11, color: "#94a3b8", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 8 }}>Salary</div>
+                    <div style={{ fontSize: 18, fontWeight: 700, color: "#0f172a", lineHeight: 1.3 }}>{cleanSalary}</div>
+                  </div>
+
+                  <div>
+                    <div style={{ fontSize: 11, color: "#94a3b8", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 6 }}>Posted</div>
+                    <div style={{ fontSize: 14, color: "#64748b" }}>{postedDate}</div>
+                  </div>
+
+                  <div>
+                    <BookmarkButton job={job} />
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* Job description and structured content */}
             <div className="prose" style={{ fontSize: 15, lineHeight: 1.75, color: "#374151", maxWidth: "100%", marginBottom: 40 }}>
               {job.description ? (
@@ -287,6 +341,12 @@ export default async function JobPage({ params }: JobPageProps) {
               ) : (
                 <p>No description provided.</p>
               )}
+            </div>
+
+            <div className="mobile-apply-bar">
+              <a href={job.applyUrl} target="_blank" rel="noopener noreferrer" style={{ display: "block", width: "100%", textAlign: "center", background: "#1e293b", color: "#ffffff", fontSize: 16, fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase", padding: 18, borderRadius: 8, textDecoration: "none", border: "none", cursor: "pointer" }}>
+                Apply Now
+              </a>
             </div>
 
             {/* Similar jobs section */}
@@ -371,7 +431,13 @@ export default async function JobPage({ params }: JobPageProps) {
         .job-detail-layout { display: grid; gap: 40px; align-items: start; grid-template-columns: minmax(0, 1fr) 35%; }
         @media (max-width: 768px) {
           .job-detail-layout { grid-template-columns: 1fr !important; gap: 24px; }
-          .job-sidebar { width: 100% !important; position: static !important; }
+          .job-sidebar { display: none !important; }
+          .mobile-job-summary { display: block !important; }
+          .mobile-apply-bar { display: block !important; margin-top: 24px; }
+        }
+        @media (min-width: 769px) {
+          .mobile-job-summary { display: none !important; }
+          .mobile-apply-bar { display: none !important; }
         }
         .prose { font-size: 15px; line-height: 1.75; color: #374151; max-width: 100%; }
         .prose h1, .prose h2, .prose h3 { font-weight: 700; color: #111827; margin-top: 1.5em; margin-bottom: 0.75em; }

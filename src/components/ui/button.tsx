@@ -16,7 +16,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = "default", asChild, type = "button", children, ...props }, ref) => {
     const classes = cn(
-      "inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#b10f2e] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+      "inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 sm:px-4 sm:py-2 text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#b10f2e] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 min-h-12 sm:min-h-11",
       buttonVariants[variant],
       className,
     );

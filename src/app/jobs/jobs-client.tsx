@@ -15,6 +15,16 @@ const PAGE_SIZE = 21;
 
 const countryFilters = [
   "All",
+  "Australia",
+  "Canada",
+  "New Zealand",
+  "Portugal",
+  "Singapore",
+  "United Kingdom",
+  "United States",
+  "Germany",
+  "Ireland",
+  "Netherlands",
   "United Arab Emirates",
   "Qatar",
   "Saudi Arabia",
@@ -23,8 +33,6 @@ const countryFilters = [
   "Bahrain",
   "Malaysia",
   "Israel",
-  "United Kingdom",
-  "Germany",
 ];
 const categorySeeds = ["All", "Engineering", "Design", "Product", "Marketing", "Data", "Sales", "Operations"];
 const typeSeeds = ["All", "Full Time", "Contract", "Part Time", "Internship", "Temporary"];
@@ -173,7 +181,7 @@ function JobCard({ job }: { job: Job }) {
   const href = buildJobPath(job);
   const overflowCount = Math.max(job.categories.length - 1, 0);
   const primaryCategory = job.categories[0] ?? "General";
-  const supplementalTag = job.seniority?.[0] ?? humanizeLabel(job.source);
+  const supplementalTag = job.seniority?.[0] ?? null;
 
   return (
     <Link
@@ -213,9 +221,11 @@ function JobCard({ job }: { job: Job }) {
         <span className="inline-flex items-center rounded-sm bg-[#d1fae5] px-2 py-1 text-xs font-semibold text-[#065f46]">
           {job.jobType}
         </span>
-        <span className="inline-flex items-center rounded-sm bg-[#f1f5f9] px-2 py-1 text-xs font-medium text-[#475569]">
-          {supplementalTag}
-        </span>
+        {supplementalTag ? (
+          <span className="inline-flex items-center rounded-sm bg-[#f1f5f9] px-2 py-1 text-xs font-medium text-[#475569]">
+            {supplementalTag}
+          </span>
+        ) : null}
       </div>
 
       <div className="mt-4 flex items-center justify-between gap-3 text-sm text-[#64748b]">

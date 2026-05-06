@@ -41,7 +41,7 @@ export async function FeaturedJobsSection() {
             const salary = job.salary ? decodeHtmlEntities(job.salary).trim() : "Not disclosed";
 
             return (
-              <div key={job.id} className="border rounded-lg p-6 bg-white hover:shadow-md transition">
+              <div key={job.id} className="border rounded-lg p-5 sm:p-6 bg-white hover:shadow-md transition">
                 <div className="mb-4">
                   <h3 className="text-lg font-semibold text-[#14213d]">{title}</h3>
                   <p className="text-sm text-slate-600 mt-1">{company}</p>
@@ -65,9 +65,9 @@ export async function FeaturedJobsSection() {
                   <div className="text-sm font-semibold text-[#0f172a]">{salary}</div>
                 </div>
 
-                <div className="space-y-2">
-                  <Link href={`/jobs/${job.slug}`} className="block text-center bg-[#1e293b] text-white font-bold py-2 rounded">
-                    Apply Now
+                <div className="space-y-3">
+                  <Link href={`/jobs/${job.slug}`} className="block w-full text-center bg-[#1e293b] text-white font-bold py-3 rounded transition hover:bg-[#1a2333]">
+                    See more
                   </Link>
                   <BookmarkButton job={job} />
                 </div>

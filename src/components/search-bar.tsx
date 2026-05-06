@@ -16,6 +16,16 @@ type SearchBarProps = {
 
 const countryOptions = [
   { label: "Any Country", value: "" },
+  { label: "🇦🇺 Australia", value: "Australia" },
+  { label: "🇨🇦 Canada", value: "Canada" },
+  { label: "🇳🇿 New Zealand", value: "New Zealand" },
+  { label: "🇵🇹 Portugal", value: "Portugal" },
+  { label: "🇸🇬 Singapore", value: "Singapore" },
+  { label: "🇬🇧 United Kingdom", value: "United Kingdom" },
+  { label: "🇺🇸 United States", value: "United States" },
+  { label: "🇩🇪 Germany", value: "Germany" },
+  { label: "🇮🇪 Ireland", value: "Ireland" },
+  { label: "🇳🇱 Netherlands", value: "Netherlands" },
   { label: "🇦🇪 United Arab Emirates (Dubai)", value: "United Arab Emirates" },
   { label: "🇶🇦 Qatar", value: "Qatar" },
   { label: "🇸🇦 Saudi Arabia", value: "Saudi Arabia" },
@@ -24,8 +34,6 @@ const countryOptions = [
   { label: "🇧🇭 Bahrain", value: "Bahrain" },
   { label: "🇲🇾 Malaysia", value: "Malaysia" },
   { label: "🇮🇱 Israel", value: "Israel" },
-  { label: "🇬🇧 United Kingdom", value: "United Kingdom" },
-  { label: "🇩🇪 Germany", value: "Germany" },
 ];
 
 const industryOptions = [
@@ -63,12 +71,12 @@ export function SearchBar({
     : "grid gap-1 text-xs font-medium text-[#14213d] sm:gap-2 sm:text-sm";
 
   const fieldClasses = dark
-    ? "h-10 rounded-full border border-white/16 bg-black/20 px-3 text-xs text-white placeholder:text-white/65 outline-none transition focus:border-white/35 focus:ring-2 focus:ring-white/10 sm:h-11 sm:px-4 sm:text-sm"
-    : "h-10 rounded-full border border-[#c8d0df] bg-white px-3 text-xs text-[#14213d] outline-none transition focus:border-[#b10f2e] focus:ring-2 focus:ring-[#f4c9d2] sm:h-11 sm:px-4 sm:text-sm";
+    ? "h-12 rounded-full border border-white/16 bg-black/20 px-3 text-xs text-white placeholder:text-white/65 outline-none transition focus:border-white/35 focus:ring-2 focus:ring-white/10 sm:h-11 sm:px-4 sm:text-sm"
+    : "h-12 rounded-full border border-[#c8d0df] bg-white px-3 text-xs text-[#14213d] outline-none transition focus:border-[#b10f2e] focus:ring-2 focus:ring-[#f4c9d2] sm:h-11 sm:px-4 sm:text-sm";
 
   const selectClasses = dark
-    ? "h-10 rounded-full border border-white/16 bg-black/20 px-3 text-xs text-white outline-none transition focus:border-white/35 focus:ring-2 focus:ring-white/10 sm:h-11 sm:px-4 sm:text-sm"
-    : "h-10 rounded-full border border-[#c8d0df] bg-white px-3 text-xs text-[#14213d] outline-none transition focus:border-[#b10f2e] focus:ring-2 focus:ring-[#f4c9d2] sm:h-11 sm:px-4 sm:text-sm";
+    ? "h-12 rounded-full border border-white/16 bg-black/20 px-3 text-xs text-white outline-none transition focus:border-white/35 focus:ring-2 focus:ring-white/10 sm:h-11 sm:px-4 sm:text-sm"
+    : "h-12 rounded-full border border-[#c8d0df] bg-white px-3 text-xs text-[#14213d] outline-none transition focus:border-[#b10f2e] focus:ring-2 focus:ring-[#f4c9d2] sm:h-11 sm:px-4 sm:text-sm";
 
   const popularLinkClasses = dark
     ? "rounded-full border border-white/12 bg-white/8 px-2 py-0.5 text-xs text-white/86 transition hover:bg-white/12 sm:px-3 sm:py-1"
@@ -77,8 +85,8 @@ export function SearchBar({
   const popularTextClasses = dark ? "text-xs text-white/72" : "text-xs text-slate-500";
 
   const buttonClasses = dark
-    ? `${compact ? "w-full" : "w-full md:w-auto"} h-10 min-h-10 text-xs text-white sm:h-11 sm:text-sm bg-[#b10f2e] hover:bg-[#930d24] rounded-full`
-    : `${compact ? "w-full" : "w-full md:w-auto"} h-10 min-h-10 text-xs sm:h-11 sm:text-sm rounded-full`;
+    ? `${compact ? "w-full" : "w-full md:w-auto"} h-12 min-h-12 text-xs text-white sm:h-11 sm:text-sm bg-[#b10f2e] hover:bg-[#930d24] rounded-full`
+    : `${compact ? "w-full" : "w-full md:w-auto"} h-12 min-h-12 text-xs sm:h-11 sm:text-sm rounded-full`;
 
   return (
     <form action={action} method="get" className={containerClasses}>

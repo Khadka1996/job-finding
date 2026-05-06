@@ -2,13 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
-type HeroSectionProps = {
-  activeJobs: number;
-};
-
-export function HeroSection({ activeJobs }: HeroSectionProps) {
-  const formattedJobs = new Intl.NumberFormat("en-US").format(activeJobs);
-
+export function HeroSection() {
   return (
     <section className="relative w-full overflow-hidden" style={{ minHeight: "480px", height: "480px" }}>
       {/* Background image */}
@@ -67,7 +61,7 @@ export function HeroSection({ activeJobs }: HeroSectionProps) {
           </p>
           <Button
             asChild
-            className="mt-1 h-10 px-6 bg-[#b10f2e] hover:bg-[#930d24] text-white font-bold text-xs sm:text-sm tracking-wide shadow-lg"
+            className="mt-1 h-12 sm:h-11 px-6 bg-[#b10f2e] hover:bg-[#930d24] text-white font-bold text-xs sm:text-sm tracking-wide shadow-lg"
           >
             <Link href="/jobs">VIEW ALL JOBS</Link>
           </Button>

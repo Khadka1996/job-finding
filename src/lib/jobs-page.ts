@@ -164,14 +164,14 @@ export function decodeHtmlEntities(value: string) {
   }
 
   return value
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&#x2F;/g, "/")
-    .replace(/&#x27;/g, "'")
-    .replace(/&nbsp;/g, " ");
+    .replace(/&amp;/gi, "&")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;/gi, "'")
+    .replace(/&#x2F;/gi, "/")
+    .replace(/&#x27;/gi, "'")
+    .replace(/&nbsp;/gi, " ");
 }
 
 export function humanizeLabel(value: string) {

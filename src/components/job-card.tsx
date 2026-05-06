@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import type { Job } from "@/types/job";
 import Image from "next/image";
 import { BookmarkButton } from "@/components/bookmark-button";
+import { useState } from "react";
 
 type JobCardProps = {
   job: Job;
@@ -24,6 +25,61 @@ const buildJobPath = (job: Job): string => {
   return `/jobs/${companySlug}-${titleSlug}`;
 };
 
+// Helper function to get company initials
+function getCompanyInitials(company: string): string {
+  const words = company.split(/\s+/).filter(Boolean);
+  if (words.length >= 2) {
+    return (words[0][0] + words[1][0]).toUpperCase();
+  }
+  return company.slice(0, 2).toUpperCase();
+}
+
+// Helper function to generate consistent color from company name
+function getCompanyColor(company: string): string {
+  let hash = 0;
+  for (let i = 0; i < company.length; i++) {
+    hash = ((hash << 5) - hash) + company.charCodeAt(i);
+    hash = hash & hash;
+  }
+  const hue = Math.abs(hash) % 360;
+  return `hsl(${hue} 70% 55%)`;
+}
+
+// Company Logo Component with fallback
+function CompanyLogo({ company, logo }: { company: string; logo: string | null | undefined }) {
+  const [imageError, setImageError] = useState(false);
+  const initials = getCompanyInitials(company);
+  const bgColor = getCompanyColor(company);
+
+  // If no logo or image failed, show initials
+  if (!logo || imageError) {
+    return (
+      <div
+        className="w-12 h-12 sm:w-14 sm:h-14 shrink-0 rounded-lg flex items-center justify-center border border-slate-200 text-sm sm:text-base font-bold text-white"
+        style={{ backgroundColor: bgColor }}
+        aria-hidden="true"
+      >
+        {initials}
+      </div>
+    );
+  }
+
+  // Try to load the image
+  return (
+    <div className="w-12 h-12 sm:w-14 sm:h-14 shrink-0 rounded-lg overflow-hidden bg-linear-to-br from-gray-100 to-gray-50 flex items-center justify-center border border-slate-200">
+      <Image
+        src={logo}
+        alt={company}
+        width={56}
+        height={56}
+        className="w-full h-full object-contain p-1"
+        onError={() => setImageError(true)}
+        unoptimized
+      />
+    </div>
+  );
+}
+
 export const JobCard = ({ job, featured = false }: JobCardProps) => {
   const publishDate = new Date(job.postedAt).toLocaleDateString("en-GB", {
     day: "2-digit",
@@ -41,56 +97,40 @@ export const JobCard = ({ job, featured = false }: JobCardProps) => {
   return (
     <Link href={jobUrl} className="block">
       <Card className={`group overflow-hidden border border-slate-200 transition duration-200 hover:shadow-lg cursor-pointer ${featured ? "ring-2 ring-[#f3c9d3]" : ""}`}>
-        <CardContent className="p-4 sm:p-5">
-          <div className="flex items-start gap-3 mb-4 pb-3 border-b border-slate-200">
-            {job.companyLogo ? (
-              <div className="w-14 h-14 flex-shrink-0 rounded-lg overflow-hidden bg-gradient-to-br from-gray-100 to-gray-50 flex items-center justify-center border border-slate-200">
-                <Image
-                  src={job.companyLogo}
-                  alt={job.company}
-                  width={56}
-                  height={56}
-                  className="w-full h-full object-contain p-1"
-                  unoptimized
-                  onError={(event) => {
-                    const img = event.currentTarget as HTMLImageElement;
-                    img.style.display = "none";
-                  }}
-                />
-              </div>
-            ) : (
-              <div className="w-14 h-14 flex-shrink-0 rounded-lg bg-[#14213d] flex items-center justify-center border border-slate-200">
-                <span className="text-sm font-bold uppercase text-white">{job.company.slice(0, 2)}</span>
-              </div>
-            )}
-            <div className="flex-grow min-w-0">
-              <h3 className="text-lg font-semibold text-[#14213d] line-clamp-2">{job.title}</h3>
-              <p className="mt-1 text-sm text-slate-600 truncate">{job.company}</p>
+        <CardContent className="p-3 sm:p-4 md:p-5">
+          {/* Header with logo and title - responsive */}
+          <div className="flex items-start gap-2 sm:gap-3 mb-4 pb-3 border-b border-slate-200">
+            <CompanyLogo company={job.company} logo={job.companyLogo} />
+            <div className="grow min-w-0">
+              <h3 className="text-sm sm:text-base md:text-lg font-semibold text-[#14213d] line-clamp-2">{job.title}</h3>
+              <p className="mt-0.5 sm:mt-1 text-xs sm:text-sm text-slate-600 truncate">{job.company}</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 mb-4 text-sm text-slate-600">
-            <span className="text-lg" aria-hidden>
+          {/* Location - responsive */}
+          <div className="flex items-center gap-2 mb-3 sm:mb-4 text-xs sm:text-sm text-slate-600">
+            <span className="text-base sm:text-lg shrink-0" aria-hidden>
               {job.countryFlag}
             </span>
             <span className="truncate">{job.location}</span>
           </div>
 
-          {/* Category and Visa badges - stacked vertically like screenshot */}
-          <div className="flex flex-col gap-2 mb-4">
+          {/* Category and Visa badges - responsive */}
+          <div className="flex flex-col gap-2 mb-3 sm:mb-4">
             {primaryCategory && (
-              <div className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-slate-700 self-start">
+              <div className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 sm:px-3 py-1 text-xs font-semibold uppercase tracking-wide text-slate-700 self-start">
                 {primaryCategory}
               </div>
             )}
             {job.visaSponsorship && (
-              <div className="inline-flex items-center gap-1 rounded-full bg-[#f3c9d3] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#b10f2e] self-start">
+              <div className="inline-flex items-center gap-1 rounded-full bg-[#f3c9d3] px-2 sm:px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#b10f2e] self-start">
                 {visaLabel}
               </div>
             )}
           </div>
 
-          <div className="flex flex-col gap-3 pt-3 border-t border-slate-200">
+          {/* Footer with date and bookmark - responsive */}
+          <div className="flex flex-col gap-2 sm:gap-3 pt-3 border-t border-slate-200">
             <span className="text-xs text-slate-500">Publish date {publishDate}</span>
             <div onClick={(e) => e.preventDefault()}>
               <BookmarkButton job={job} compact={true} />

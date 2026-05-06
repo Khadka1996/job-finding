@@ -22,7 +22,7 @@ export default async function Home() {
   return (
     <div>
       {/* Hero Section */}
-      <HeroSection activeJobs={jobsResult.total} />
+      <HeroSection />
 
       <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
         {/* Quick Search Section */}
@@ -34,7 +34,7 @@ export default async function Home() {
             </div>
             <h2 className="text-3xl font-bold text-[#14213d]">Visa Sponsorship Jobs.</h2>
             <h3 className="text-2xl font-semibold text-[#14213d]">and Globally. Easily.</h3>
-            <p className="mx-auto max-w-2xl text-slate-600 sm:mx-0">okey</p>
+            <p className="mx-auto max-w-2xl text-slate-600 sm:mx-0">Search visa sponsorship jobs across top destinations and industries.</p>
           </div>
 
           <SearchBar />

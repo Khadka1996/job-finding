@@ -372,6 +372,22 @@ function stripTags(input: string) {
   return cleanHtml(input).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 }
 
+function decodeHtmlEntities(value: string) {
+  if (!value) {
+    return value;
+  }
+
+  return value
+    .replace(/&amp;/gi, "&")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;/gi, "'")
+    .replace(/&#x2F;/gi, "/")
+    .replace(/&#x27;/gi, "'")
+    .replace(/&nbsp;/gi, " ");
+}
+
 function getShortDescription(description: string) {
   const plain = stripTags(description);
   return plain.length > 160 ? `${plain.slice(0, 157)}...` : plain;
@@ -554,10 +570,10 @@ function isValidSlug(slug: string): boolean {
 }
 
 function normalizeArbeitnowJob(raw: ArbeitnowJob, index: number): Job {
-  const description = raw.description ? cleanHtml(raw.description) : "No description provided by the source API.";
-  const title = raw.title?.trim() || "Untitled role";
-  const company = raw.company_name?.trim() || "Confidential company";
-  const location = raw.location?.trim() || (raw.remote ? "Remote" : "Worldwide");
+  const description = raw.description ? cleanHtml(decodeHtmlEntities(raw.description)) : "No description provided by the source API.";
+  const title = decodeHtmlEntities(raw.title?.trim() || "Untitled role");
+  const company = decodeHtmlEntities(raw.company_name?.trim() || "Confidential company");
+  const location = decodeHtmlEntities(raw.location?.trim() || (raw.remote ? "Remote" : "Worldwide"));
   
   // Only use raw.slug if it looks valid; otherwise generate from title-company-location
   let slugBase: string;
@@ -600,11 +616,11 @@ function normalizeArbeitnowJob(raw: ArbeitnowJob, index: number): Job {
 }
 
 function normalizeRemotiveJob(raw: RemotiveJob): Job {
-  const location = raw.candidate_required_location?.trim() || "Remote";
+  const location = decodeHtmlEntities(raw.candidate_required_location?.trim() || "Remote");
   const country = inferCountryFromLocation(location);
-  const title = raw.title?.trim() || "Untitled role";
-  const company = raw.company_name?.trim() || "Confidential company";
-  const description = raw.description ? cleanHtml(raw.description) : "No description provided by the source API.";
+  const title = decodeHtmlEntities(raw.title?.trim() || "Untitled role");
+  const company = decodeHtmlEntities(raw.company_name?.trim() || "Confidential company");
+  const description = raw.description ? cleanHtml(decodeHtmlEntities(raw.description)) : "No description provided by the source API.";
   const slugBase = `${title}-${company}-${location}`;
   const slug = slugBase
     .toLowerCase()
@@ -647,11 +663,11 @@ function normalizeRemotiveJob(raw: RemotiveJob): Job {
 }
 
 function normalizeTheMuseJob(raw: TheMuseJob): Job {
-  const location = raw.locations?.[0]?.name?.trim() || "Remote";
+  const location = decodeHtmlEntities(raw.locations?.[0]?.name?.trim() || "Remote");
   const country = inferCountryFromLocation(location);
-  const title = raw.name?.trim() || "Untitled role";
-  const company = raw.company?.name?.trim() || "Confidential company";
-  const description = raw.contents ? cleanHtml(raw.contents) : "No description provided by the source API.";
+  const title = decodeHtmlEntities(raw.name?.trim() || "Untitled role");
+  const company = decodeHtmlEntities(raw.company?.name?.trim() || "Confidential company");
+  const description = raw.contents ? cleanHtml(decodeHtmlEntities(raw.contents)) : "No description provided by the source API.";
   const slugBase = `${title}-${company}-${location}`;
   const slug = slugBase
     .toLowerCase()
@@ -698,11 +714,11 @@ function normalizeTheMuseJob(raw: TheMuseJob): Job {
 }
 
 function normalizeRemoteOkJob(raw: RemoteOkJob): Job {
-  const location = raw.location?.trim() || "Remote";
+  const location = decodeHtmlEntities(raw.location?.trim() || "Remote");
   const country = inferCountryFromLocation(location);
-  const title = raw.position?.trim() || "Untitled role";
-  const company = raw.company?.trim() || "Confidential company";
-  const description = raw.description ? cleanHtml(raw.description) : "No description provided by the source API.";
+  const title = decodeHtmlEntities(raw.position?.trim() || "Untitled role");
+  const company = decodeHtmlEntities(raw.company?.trim() || "Confidential company");
+  const description = raw.description ? cleanHtml(decodeHtmlEntities(raw.description)) : "No description provided by the source API.";
   
   // Only use raw.slug if it looks valid; otherwise generate from title-company-location
   let slugBase: string;
@@ -765,13 +781,13 @@ function normalizeRemoteOkJob(raw: RemoteOkJob): Job {
 }
 
 function normalizeJobicyJob(raw: JobicyJob): Job {
-  const location = raw.jobGeo?.trim() || "Remote";
+  const location = decodeHtmlEntities(raw.jobGeo?.trim() || "Remote");
   const country = inferCountryFromLocation(location);
-  const title = raw.jobTitle?.trim() || "Untitled role";
-  const company = raw.companyName?.trim() || "Confidential company";
+  const title = decodeHtmlEntities(raw.jobTitle?.trim() || "Untitled role");
+  const company = decodeHtmlEntities(raw.companyName?.trim() || "Confidential company");
   const description = raw.jobDescription
-    ? cleanHtml(raw.jobDescription)
-    : raw.jobExcerpt?.trim() || "No description provided by the source API.";
+    ? cleanHtml(decodeHtmlEntities(raw.jobDescription))
+    : decodeHtmlEntities(raw.jobExcerpt?.trim() || "No description provided by the source API.");
   
   // Only use raw.jobSlug if it looks valid; otherwise generate from title-company-location
   let slugBase: string;
@@ -834,11 +850,11 @@ function normalizeJobicyJob(raw: JobicyJob): Job {
 }
 
 function normalizeHimalayasJob(raw: HimalayasJob, index: number): Job {
-  const description = raw.description || raw.excerpt || "No description provided by the source API.";
-  const title = raw.title?.trim() || "Untitled role";
-  const company = raw.companyName?.trim() || "Confidential company";
+  const description = decodeHtmlEntities(raw.description || raw.excerpt || "No description provided by the source API.");
+  const title = decodeHtmlEntities(raw.title?.trim() || "Untitled role");
+  const company = decodeHtmlEntities(raw.companyName?.trim() || "Confidential company");
   const locations = (raw.locationRestrictions ?? [])
-    .map((item) => (typeof item === "string" ? item : item?.name ?? ""))
+    .map((item) => decodeHtmlEntities(typeof item === "string" ? item : item?.name ?? ""))
     .filter(Boolean);
   const location = locations.length > 0 ? locations.join(", ") : "Remote";
 

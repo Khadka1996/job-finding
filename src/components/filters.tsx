@@ -18,7 +18,7 @@ export function Filters({ values }: FiltersProps) {
 
         <label className="grid gap-1 sm:gap-2 text-xs sm:text-sm font-medium text-[#14213d]">
           Job type
-          <select name="type" defaultValue={values.type ?? ""} className="h-10 sm:h-11 rounded-full border border-[#c8d0df] bg-white px-3 sm:px-4 text-xs sm:text-sm outline-none focus:border-[#b10f2e]">
+          <select name="type" defaultValue={values.type ?? ""} className="h-12 sm:h-11 rounded-full border border-[#c8d0df] bg-white px-3 sm:px-4 text-xs sm:text-sm outline-none focus:border-[#b10f2e]">
             <option value="">All types</option>
             <option value="remote">Remote</option>
             <option value="full-time">Full-time</option>
@@ -29,14 +29,14 @@ export function Filters({ values }: FiltersProps) {
 
         <label className="grid gap-1 sm:gap-2 text-xs sm:text-sm font-medium text-[#14213d]">
           Visa sponsorship
-          <select name="visa" defaultValue={values.visa ?? ""} className="h-10 sm:h-11 rounded-full border border-[#c8d0df] bg-white px-3 sm:px-4 text-xs sm:text-sm outline-none focus:border-[#b10f2e]">
+          <select name="visa" defaultValue={values.visa ?? ""} className="h-12 sm:h-11 rounded-full border border-[#c8d0df] bg-white px-3 sm:px-4 text-xs sm:text-sm outline-none focus:border-[#b10f2e]">
             <option value="">Any</option>
             <option value="yes">Available</option>
           </select>
         </label>
 
         <div className="col-span-2 sm:col-span-1 lg:col-span-auto flex items-end gap-2 sm:gap-3">
-          <button type="submit" className="w-full sm:w-auto h-10 sm:h-11 rounded-full bg-[#b10f2e] px-4 sm:px-5 text-xs sm:text-sm font-medium text-white transition hover:bg-[#8d1129]">
+          <button type="submit" className="w-full sm:w-auto h-12 sm:h-11 rounded-full bg-[#b10f2e] px-4 sm:px-5 text-xs sm:text-sm font-medium text-white transition hover:bg-[#8d1129]">
             Apply
           </button>
         </div>
