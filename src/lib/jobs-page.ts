@@ -218,13 +218,13 @@ export function uniqueLabels(values: Array<string | undefined | null>) {
 
 export function formatPublishDate(value?: string | number | null) {
   if (!value) {
-    return "01-01-1970";
+    return "Recently posted";
   }
 
   const date = new Date(value);
 
-  if (Number.isNaN(date.getTime())) {
-    return "01-01-1970";
+  if (Number.isNaN(date.getTime()) || date.getFullYear() === 1970) {
+    return "Recently posted";
   }
 
   const day = String(date.getDate()).padStart(2, "0");

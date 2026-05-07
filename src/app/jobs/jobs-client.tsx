@@ -339,17 +339,34 @@ export function JobsClient() {
   }, [jobs]);
 
   const normalizedSearch = normalizeSearchText(searchQuery);
-  const filteredJobs = jobs.filter((job) => {
-    const searchable = `${job.title} ${job.companyName}`.toLowerCase();
-    const queryMatches = normalizedSearch === "" || searchable.includes(normalizedSearch);
+  const filteredJobs = jobs
+    .filter((job) => {
+      const searchable = `${job.title} ${job.companyName}`.toLowerCase();
+      const queryMatches = normalizedSearch === "" || searchable.includes(normalizedSearch);
 
-    return (
-      queryMatches &&
-      matchesLocation(job, selectedLocation) &&
-      matchesCategory(job, selectedCategory) &&
-      matchesType(job, selectedType)
-    );
-  });
+      return (
+        queryMatches &&
+        matchesLocation(job, selectedLocation) &&
+        matchesCategory(job, selectedCategory) &&
+        matchesType(job, selectedType)
+      );
+    })
+    .sort((a, b) => {
+      // Sort by most recently posted first
+      let dateA = new Date(a.publishDate).getTime();
+      let dateB = new Date(b.publishDate).getTime();
+      
+      // Treat invalid dates as today for proper sorting
+      const today = new Date().getTime();
+      if (isNaN(dateA) || new Date(dateA).getFullYear() === 1970) {
+        dateA = today;
+      }
+      if (isNaN(dateB) || new Date(dateB).getFullYear() === 1970) {
+        dateB = today;
+      }
+      
+      return dateB - dateA; // Descending order (newest first)
+    });
 
   const totalPages = Math.max(1, Math.ceil(filteredJobs.length / PAGE_SIZE));
   const safePage = Math.min(page, totalPages);

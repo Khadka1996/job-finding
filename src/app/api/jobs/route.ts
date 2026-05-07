@@ -5,11 +5,26 @@ export async function GET() {
   try {
     const jobs = await getAllJobs();
     
-    // Shuffle for variety in listings
-    const shuffled = jobs.sort(() => Math.random() - 0.5);
+    // Sort by most recently posted first
+    // Treat invalid/1970 dates as today's date for proper sorting
+    const sorted = jobs.sort((a, b) => {
+      let dateA = new Date(a.postedAt).getTime();
+      let dateB = new Date(b.postedAt).getTime();
+      
+      // If date is invalid or is epoch (1970), treat as today
+      const today = new Date().getTime();
+      if (isNaN(dateA) || new Date(dateA).getFullYear() === 1970) {
+        dateA = today;
+      }
+      if (isNaN(dateB) || new Date(dateB).getFullYear() === 1970) {
+        dateB = today;
+      }
+      
+      return dateB - dateA; // Descending order (newest first)
+    });
     
     return NextResponse.json({ 
-      jobs: shuffled.map(job => ({
+      jobs: sorted.map(job => ({
         id: job.id,
         slug: job.slug,
         title: job.title,

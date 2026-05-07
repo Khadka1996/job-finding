@@ -569,6 +569,31 @@ function isValidSlug(slug: string): boolean {
   return /^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug);
 }
 
+function validateAndCleanDate(dateStr?: string | null): string {
+  if (!dateStr) {
+    return new Date().toISOString();
+  }
+
+  const date = new Date(dateStr);
+  
+  // Check if date is valid
+  if (isNaN(date.getTime())) {
+    return new Date().toISOString();
+  }
+
+  // Check if date is epoch (1970) or before year 2000 (likely invalid)
+  if (date.getFullYear() < 2000) {
+    return new Date().toISOString();
+  }
+
+  // Check if date is in the future (shouldn't be)
+  if (date.getTime() > new Date().getTime()) {
+    return new Date().toISOString();
+  }
+
+  return date.toISOString();
+}
+
 function normalizeArbeitnowJob(raw: ArbeitnowJob, index: number): Job {
   const description = raw.description ? cleanHtml(decodeHtmlEntities(raw.description)) : "No description provided by the source API.";
   const title = decodeHtmlEntities(raw.title?.trim() || "Untitled role");
@@ -608,7 +633,7 @@ function normalizeArbeitnowJob(raw: ArbeitnowJob, index: number): Job {
     applyUrl: raw.url || raw.company_url || `https://www.arbeitnow.com/${raw.slug ?? slug}`,
     companyUrl: raw.company_url,
     companyLogo: raw.company_logo ?? null,
-    postedAt: raw.created_at ?? new Date().toISOString(),
+    postedAt: validateAndCleanDate(raw.created_at),
     categories: inferCategories(raw),
     salary: raw.salary ?? null,
     source: "Arbeitnow",
@@ -655,7 +680,7 @@ function normalizeRemotiveJob(raw: RemotiveJob): Job {
     description,
     shortDescription: getShortDescription(description),
     applyUrl: raw.url ?? "https://remotive.com/",
-    postedAt: raw.publication_date ?? new Date().toISOString(),
+    postedAt: validateAndCleanDate(raw.publication_date),
     categories: [raw.category?.toLowerCase() ?? "technology"],
     salary: raw.salary ?? null,
     source: "Remotive",
@@ -706,7 +731,7 @@ function normalizeTheMuseJob(raw: TheMuseJob): Job {
     description,
     shortDescription: getShortDescription(description),
     applyUrl: raw.refs?.landing_page ?? "https://www.themuse.com/jobs",
-    postedAt: raw.publication_date ?? new Date().toISOString(),
+    postedAt: validateAndCleanDate(raw.publication_date),
     categories: (raw.categories ?? []).map((category) => (category.name ?? "").toLowerCase()).filter(Boolean).slice(0, 5),
     salary: null,
     source: "The Muse",
@@ -773,7 +798,7 @@ function normalizeRemoteOkJob(raw: RemoteOkJob): Job {
     shortDescription: getShortDescription(description),
     applyUrl: raw.url?.startsWith("http") ? raw.url : `https://remoteok.com/${raw.url ?? "remote-jobs"}`,
     companyLogo: raw.company_logo ?? null,
-    postedAt: raw.date ?? new Date().toISOString(),
+    postedAt: validateAndCleanDate(raw.date),
     categories: (raw.tags ?? []).map((tag) => tag.toLowerCase()).slice(0, 6),
     salary,
     source: "RemoteOK",
@@ -842,7 +867,7 @@ function normalizeJobicyJob(raw: JobicyJob): Job {
     shortDescription: getShortDescription(description),
     applyUrl: raw.url ?? "https://jobicy.com/jobs",
     companyLogo: raw.companyLogo ?? null,
-    postedAt: raw.pubDate ?? new Date().toISOString(),
+    postedAt: validateAndCleanDate(raw.pubDate),
     categories: (raw.jobIndustry ?? []).map((item) => item.toLowerCase()).slice(0, 6),
     salary,
     source: "Jobicy",
@@ -894,7 +919,7 @@ function normalizeHimalayasJob(raw: HimalayasJob, index: number): Job {
     shortDescription: getShortDescription(description),
     applyUrl: raw.applicationLink || "https://himalayas.app",
     companyLogo: raw.companyLogo ?? null,
-    postedAt: raw.pubDate ?? new Date().toISOString(),
+    postedAt: validateAndCleanDate(raw.pubDate),
     categories: (raw.categories ?? []).map((c) => c.toLowerCase()).filter(Boolean).slice(0, 5),
     salary: null,
     source: "Himalayas",
