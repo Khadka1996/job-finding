@@ -1,23 +1,26 @@
+"use client";
+
 import Link from "next/link";
+import ReactCountryFlag from "react-country-flag";
 
 interface CountryLink {
   label: string;
-  flag: string;
+  countryCode: string;
   href: string;
   description: string;
 }
 
 const countries: CountryLink[] = [
-  { label: "Australia", flag: "🇦🇺", href: "/jobs?location=Australia", description: "Visa sponsorship jobs" },
-  { label: "Canada", flag: "🇨🇦", href: "/jobs?location=Canada", description: "Visa sponsorship jobs" },
-  { label: "Germany", flag: "🇩🇪", href: "/jobs?location=Germany", description: "Visa sponsorship jobs" },
-  { label: "Ireland", flag: "🇮🇪", href: "/jobs?location=Ireland", description: "Visa sponsorship jobs" },
-  { label: "Netherlands", flag: "🇳🇱", href: "/jobs?location=Netherlands", description: "Visa sponsorship jobs" },
-  { label: "New Zealand", flag: "🇳🇿", href: "/jobs?location=New%20Zealand", description: "Visa sponsorship jobs" },
-  { label: "Portugal", flag: "🇵🇹", href: "/jobs?location=Portugal", description: "Visa sponsorship jobs" },
-  { label: "Singapore", flag: "🇸🇬", href: "/jobs?location=Singapore", description: "Visa sponsorship jobs" },
-  { label: "United Kingdom", flag: "🇬🇧", href: "/jobs?location=United%20Kingdom", description: "Visa sponsorship jobs" },
-  { label: "United States", flag: "🇺🇸", href: "/jobs?location=United%20States", description: "Visa sponsorship jobs" },
+  { label: "Australia", countryCode: "AU", href: "/jobs?location=Australia", description: "Visa sponsorship jobs" },
+  { label: "Canada", countryCode: "CA", href: "/jobs?location=Canada", description: "Visa sponsorship jobs" },
+  { label: "Germany", countryCode: "DE", href: "/jobs?location=Germany", description: "Visa sponsorship jobs" },
+  { label: "Ireland", countryCode: "IE", href: "/jobs?location=Ireland", description: "Visa sponsorship jobs" },
+  { label: "Netherlands", countryCode: "NL", href: "/jobs?location=Netherlands", description: "Visa sponsorship jobs" },
+  { label: "New Zealand", countryCode: "NZ", href: "/jobs?location=New%20Zealand", description: "Visa sponsorship jobs" },
+  { label: "Portugal", countryCode: "PT", href: "/jobs?location=Portugal", description: "Visa sponsorship jobs" },
+  { label: "Singapore", countryCode: "SG", href: "/jobs?location=Singapore", description: "Visa sponsorship jobs" },
+  { label: "United Kingdom", countryCode: "GB", href: "/jobs?location=United%20Kingdom", description: "Visa sponsorship jobs" },
+  { label: "United States", countryCode: "US", href: "/jobs?location=United%20States", description: "Visa sponsorship jobs" },
 ];
 
 export function CountriesSection() {
@@ -41,7 +44,12 @@ export function CountriesSection() {
             >
               <div className="flex items-center gap-3">
                 <span className="text-4xl sm:text-5xl" aria-hidden>
-                  {country.flag}
+                  <ReactCountryFlag
+                    countryCode={country.countryCode}
+                    svg
+                    style={{ width: '2.2rem', height: '2.2rem' }}
+                    title={country.label}
+                  />
                 </span>
                 <h3 className="text-sm sm:text-base font-semibold text-[#14213d] leading-tight">
                   {country.label}

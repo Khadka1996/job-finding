@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import ReactCountryFlag from "react-country-flag";
 
 const navItems = [
   { href: "/jobs", label: "Jobs" },
@@ -13,30 +14,30 @@ const navItems = [
 ];
 
 const countryItems = [
-  { href: "/jobs?location=United%20Arab%20Emirates", label: "🇦🇪 UAE" },
-  { href: "/jobs?location=Qatar", label: "🇶🇦 Qatar" },
-  { href: "/jobs?location=Saudi%20Arabia", label: "🇸🇦 Saudi Arabia" },
-  { href: "/jobs?location=Kuwait", label: "🇰🇼 Kuwait" },
-  { href: "/jobs?location=Oman", label: "🇴🇲 Oman" },
-  { href: "/jobs?location=Bahrain", label: "🇧🇭 Bahrain" },
-  { href: "/jobs?location=Malaysia", label: "🇲🇾 Malaysia" },
-  { href: "/jobs?location=Israel", label: "🇮🇱 Israel" },
-  { href: "/jobs?location=United%20Kingdom", label: "🇬🇧 UK" },
-  { href: "/jobs?location=Germany", label: "🇩🇪 Germany" },
-  { href: "/jobs?location=Australia", label: "🇦🇺 Australia" },
-  { href: "/jobs?location=New%20Zealand", label: "🇳🇿 New Zealand" },
-  { href: "/jobs?location=Canada", label: "🇨🇦 Canada" },
-  { href: "/jobs?location=United%20States", label: "🇺🇸 USA" },
-  { href: "/jobs?location=Ireland", label: "🇮🇪 Ireland" },
-  { href: "/jobs?location=Singapore", label: "🇸🇬 Singapore" },
-  { href: "/jobs?location=Netherlands", label: "🇳🇱 Netherlands" },
-  { href: "/jobs?location=France", label: "🇫🇷 France" },
-  { href: "/jobs?location=Italy", label: "🇮🇹 Italy" },
-  { href: "/jobs?location=Portugal", label: "🇵🇹 Portugal" },
-  { href: "/jobs?location=Spain", label: "🇪🇸 Spain" },
-  { href: "/jobs?location=Japan", label: "🇯🇵 Japan" },
-  { href: "/jobs?location=South%20Korea", label: "🇰🇷 South Korea" },
-  { href: "/jobs?location=India", label: "🇮🇳 India" },
+  { href: "/jobs?location=United%20Arab%20Emirates", countryCode: "AE", labelText: "UAE" },
+  { href: "/jobs?location=Qatar", countryCode: "QA", labelText: "Qatar" },
+  { href: "/jobs?location=Saudi%20Arabia", countryCode: "SA", labelText: "Saudi Arabia" },
+  { href: "/jobs?location=Kuwait", countryCode: "KW", labelText: "Kuwait" },
+  { href: "/jobs?location=Oman", countryCode: "OM", labelText: "Oman" },
+  { href: "/jobs?location=Bahrain", countryCode: "BH", labelText: "Bahrain" },
+  { href: "/jobs?location=Malaysia", countryCode: "MY", labelText: "Malaysia" },
+  { href: "/jobs?location=Israel", countryCode: "IL", labelText: "Israel" },
+  { href: "/jobs?location=United%20Kingdom", countryCode: "GB", labelText: "UK" },
+  { href: "/jobs?location=Germany", countryCode: "DE", labelText: "Germany" },
+  { href: "/jobs?location=Australia", countryCode: "AU", labelText: "Australia" },
+  { href: "/jobs?location=New%20Zealand", countryCode: "NZ", labelText: "New Zealand" },
+  { href: "/jobs?location=Canada", countryCode: "CA", labelText: "Canada" },
+  { href: "/jobs?location=United%20States", countryCode: "US", labelText: "USA" },
+  { href: "/jobs?location=Ireland", countryCode: "IE", labelText: "Ireland" },
+  { href: "/jobs?location=Singapore", countryCode: "SG", labelText: "Singapore" },
+  { href: "/jobs?location=Netherlands", countryCode: "NL", labelText: "Netherlands" },
+  { href: "/jobs?location=France", countryCode: "FR", labelText: "France" },
+  { href: "/jobs?location=Italy", countryCode: "IT", labelText: "Italy" },
+  { href: "/jobs?location=Portugal", countryCode: "PT", labelText: "Portugal" },
+  { href: "/jobs?location=Spain", countryCode: "ES", labelText: "Spain" },
+  { href: "/jobs?location=Japan", countryCode: "JP", labelText: "Japan" },
+  { href: "/jobs?location=South%20Korea", countryCode: "KR", labelText: "South Korea" },
+  { href: "/jobs?location=India", countryCode: "IN", labelText: "India" },
 ];
 
 export function SiteHeader() {
@@ -116,7 +117,10 @@ export function SiteHeader() {
                       setCountriesOpen(false);
                     }}
                   >
-                    {item.label}
+                    <span className="inline-flex items-center gap-2">
+                      <ReactCountryFlag svg countryCode={item.countryCode} style={{ width: '1.25rem', height: '1.25rem' }} title={item.labelText} />
+                      <span>{item.labelText}</span>
+                    </span>
                   </Link>
                 ))}
               </div>
@@ -188,7 +192,10 @@ export function SiteHeader() {
                         setMobileCountriesOpen(false);
                       }}
                     >
-                      {item.label}
+                      <span className="inline-flex items-center gap-2">
+                        <ReactCountryFlag svg countryCode={item.countryCode} style={{ width: '1rem', height: '1rem' }} title={item.labelText} />
+                        <span>{item.labelText}</span>
+                      </span>
                     </Link>
                   ))}
                 </div>
