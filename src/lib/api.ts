@@ -364,6 +364,8 @@ function cleanHtml(input: string) {
   return input
     .replace(/<style[\s\S]*?<\/style>/gi, "")
     .replace(/<script[\s\S]*?<\/script>/gi, "")
+      .replace(/<(p|div|span|li)[^>]*>\s*(?:<[^>]+>\s*)*(?:Originally(?:\s+published)?(?:\s+on|\s+at)?)[\s\S]*?<\/\1>/gi, "")
+      .replace(/(?:Originally(?:\s+published)?(?:\s+on|\s+at)?)[\s\S]*?(?=<br\s*\/?>|<\/p>|<\/div>|<\/li>|<\/span>|$)/gi, "")
     .replace(/\s+/g, " ")
     .trim();
 }
@@ -875,7 +877,8 @@ function normalizeJobicyJob(raw: JobicyJob): Job {
 }
 
 function normalizeHimalayasJob(raw: HimalayasJob, index: number): Job {
-  const description = decodeHtmlEntities(raw.description || raw.excerpt || "No description provided by the source API.");
+  const rawDesc = raw.description || raw.excerpt;
+  const description = rawDesc ? cleanHtml(decodeHtmlEntities(rawDesc)) : "No description provided by the source API.";
   const title = decodeHtmlEntities(raw.title?.trim() || "Untitled role");
   const company = decodeHtmlEntities(raw.companyName?.trim() || "Confidential company");
   const locations = (raw.locationRestrictions ?? [])

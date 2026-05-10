@@ -47,7 +47,6 @@ export default async function JobPage({ params }: JobPageProps) {
   const cleanTitle = decodeHtmlEntities(job.title);
   const cleanCompanyName = decodeHtmlEntities(job.company);
   const cleanLocation = decodeHtmlEntities(job.location || "Worldwide");
-  const cleanCategories = (job.categories ?? []).map((category) => decodeHtmlEntities(category));
   const cleanSalary = job.salary ? decodeHtmlEntities(job.salary).trim() : "Not disclosed";
   const companyLogoUrl: string | null = isValidLogoUrl(job.companyLogo) ? job.companyLogo ?? null : null;
   const postedDate = job.postedAt
@@ -241,19 +240,6 @@ function getFlagEmoji(location = "") {
                     </div>
                   </div>
 
-                  {cleanCategories.length > 0 ? (
-                    <div>
-                      <div style={{ fontSize: 11, color: "#94a3b8", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 8 }}>Category</div>
-                      <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                        {cleanCategories.map((cat) => (
-                          <span key={cat} style={{ background: "#e8f5e9", color: "#2e7d32", borderRadius: 20, fontSize: 13, padding: "6px 14px", fontWeight: 600 }}>
-                            {cat}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  ) : null}
-
                   <div>
                     <div style={{ fontSize: 11, color: "#94a3b8", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 8 }}>Salary</div>
                     <div style={{ fontSize: 18, fontWeight: 700, color: "#0f172a", lineHeight: 1.3 }}>{cleanSalary}</div>
@@ -320,20 +306,6 @@ function getFlagEmoji(location = "") {
                   <span>{cleanLocation}</span>
                 </div>
               </div>
-
-              {/* Category badge */}
-              {cleanCategories.length > 0 ? (
-                <div style={{ marginBottom: 20 }}>
-                  <div style={{ fontSize: 11, color: "#94a3b8", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 8 }}>Category</div>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                    {cleanCategories.map((cat) => (
-                      <span key={cat} style={{ background: "#e8f5e9", color: "#2e7d32", borderRadius: 20, fontSize: 13, padding: "6px 14px", fontWeight: 600 }}>
-                        {cat}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ) : null}
 
               {/* Salary */}
               <div style={{ marginBottom: 20 }}>
